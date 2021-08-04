@@ -1,2 +1,38 @@
-// .app {
-// }
+:root {
+  --contentWidth: calc(100% - 30px);
+  --contentPadding: calc(50% - var(--contentWidth) / 2);
+
+  @media (min-width: 576px) {
+    --contentWidth: 540px;
+  }
+  @media (min-width: 768px) {
+    --contentWidth: 720px;
+  }
+  @media (min-width: 992px) {
+    --contentWidth: 960px;
+  }
+  @media (min-width: 1200px) {
+    --contentWidth: 1140px;
+  }
+  @media (min-width: 1440px) {
+    --contentWidth: 1320px;
+  }
+  @media (min-width: 1660px) {
+    --contentWidth: 1540px;
+  }
+  @media (min-width: 1920px) {
+    --contentWidth: 1820px;
+  }
+  @media (min-width: 2560px) {
+    --contentWidth: 2460px;
+  }
+
+  --colorPrimary: #47769d;
+  --colorDarkPrimary: #306588;
+  --colorError: #f08080;
+  --colorAdminPrimary: #478ebe;
+  --colorTextError: #db4437;
+}
+
+.app {
+}
