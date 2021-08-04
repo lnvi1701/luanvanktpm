@@ -7,9 +7,12 @@ import "./header.scss";
 function Header(props) {
   return (
     <header className="header">
-      <div className="logoContainer">
-        <Logo />
-      </div>
+      <Link to="/">
+        <div className="logoContainer">
+          <Logo />
+        </div>
+      </Link>
+
       <div className="left">
         <Link to="/login">
           <Button variant="contained" color="primary">
