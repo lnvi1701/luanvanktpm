@@ -4,12 +4,17 @@ import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
 import { adminLogin } from "../../api/stock-manager";
 import "./loginPage.scss";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-function LoginPage(props) {
+import { setAuth } from "../../redux/auth/auth.actions";
+
+function LoginPage({ setAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
   const [err, setErr] = useState("");
+  const history = useHistory();
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -21,10 +26,11 @@ function LoginPage(props) {
 
   const onSubmit = () => {
     setApiLoading(true);
+    setErr(null);
     adminLogin(email, password)
       .then((res) => {
         if (res.error) throw res.error;
-        console.log(res);
+        handleLoginSuccess(res);
       })
       .catch((err) => {
         setErr(err.message);
@@ -32,6 +38,11 @@ function LoginPage(props) {
       .finally(() => {
         setApiLoading(false);
       });
+  };
+
+  const handleLoginSuccess = (res) => {
+    setAuth(res);
+    history.push("/dashboard");
   };
 
   const contentBtn = apiLoading ? (
@@ -72,4 +83,10 @@ function LoginPage(props) {
   );
 }
 
-export default LoginPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAuth,
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LoginPage);
