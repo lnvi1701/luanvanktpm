@@ -1,9 +1,10 @@
 import React from "react";
+import Header from "./components/header/Header";
 
 function DashBoardPage({ children }) {
   return (
-    <div>
-      dashboard page
+    <div className="adminDashboard">
+      <Header />
       {children}
     </div>
   );
