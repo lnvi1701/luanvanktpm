@@ -1,8 +1,13 @@
 import React from "react";
-import DashBoardPage from "../layout/dashboard/DashBoardPage";
+import DashBoardLayout from "../layout/dashboard/DashBoard";
+import DashBoardPage from "../components/dashboard/DashBoardPage";
 
 function DashBoard(props) {
-  return <DashBoardPage>content dashboard</DashBoardPage>;
+  return (
+    <DashBoardLayout>
+      <DashBoardPage />
+    </DashBoardLayout>
+  );
 }
 
 export default DashBoard;

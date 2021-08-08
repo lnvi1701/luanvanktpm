@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./components/header/Header";
 
-function DashBoardPage({ children }) {
+function DashBoardLayout({ children }) {
   return (
     <div className="adminDashboard">
       <Header />
@@ -10,4 +10,4 @@ function DashBoardPage({ children }) {
   );
 }
 
-export default DashBoardPage;
+export default DashBoardLayout;
