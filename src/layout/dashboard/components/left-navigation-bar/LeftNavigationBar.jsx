@@ -11,7 +11,7 @@ const NAV_ITEM = [
 function LeftNavigationBar(props) {
   const listNav = NAV_ITEM.map((item, index) => {
     return (
-      <div className="item" key={index}>
+      <div className="item" key={index} onClick={() => props.onItemClick(item)}>
         {item.name}
       </div>
     );

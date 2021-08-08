@@ -32,7 +32,8 @@
   --colorError: #f08080;
   --colorAdminPrimary: #478ebe;
   --colorTextError: #db4437;
-}
 
-.app {
+  * {
+    box-sizing: border-box;
+  }
 }

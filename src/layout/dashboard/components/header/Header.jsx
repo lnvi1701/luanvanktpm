@@ -109,6 +109,10 @@ function PrimarySearchAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const onToggleMenuClick = (event) => {
+    props.onHambugerClick();
+  };
+
   const handleLogout = () => {
     props.logOut();
     setAnchorEl(null);
@@ -183,6 +187,7 @@ function PrimarySearchAppBar(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={onToggleMenuClick}
           >
             <MenuIcon />
           </IconButton>
