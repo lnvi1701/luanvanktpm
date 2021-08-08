@@ -40,9 +40,9 @@ function LoginPage({ setAuth }) {
       });
   };
 
-  const handleLoginSuccess = (res) => {
-    setAuth(res);
-    history.push("/dashboard");
+  const handleLoginSuccess = async (res) => {
+    await setAuth(res);
+    await history.push("/dashboard");
   };
 
   const contentBtn = apiLoading ? (
@@ -83,10 +83,16 @@ function LoginPage({ setAuth }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    setAuth,
+    user: state.auth.user,
   };
 };
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAuth: (user) => dispatch(setAuth(user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

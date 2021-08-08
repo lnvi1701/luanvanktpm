@@ -1,9 +1,14 @@
-import { SET } from "./auth.types";
+import { SET, DELETE } from "./auth.types";
 
 export const setAuth = (payload) => {
-  console.log("from actions: ", payload);
   return {
     type: SET,
     payload,
+  };
+};
+
+export const logOut = () => {
+  return {
+    type: DELETE,
   };
 };
