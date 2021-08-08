@@ -23,7 +23,10 @@ function DashBoard(props) {
   const renderActiveComponent = COMPONENTS[activeComponent];
 
   return (
-    <DashBoardLayout onItemClick={onItemClick}>
+    <DashBoardLayout
+      onItemClick={onItemClick}
+      activeComponent={activeComponent}
+    >
       {renderActiveComponent}
     </DashBoardLayout>
   );

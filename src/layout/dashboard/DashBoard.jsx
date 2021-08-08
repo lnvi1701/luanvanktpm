@@ -4,7 +4,7 @@ import Header from "./components/header/Header";
 import LeftNavigationBar from "./components/left-navigation-bar/LeftNavigationBar";
 import "./dashBoard.scss";
 
-function DashBoardLayout({ children, onItemClick }) {
+function DashBoardLayout({ children, onItemClick, activeComponent }) {
   const [isOpenNav, setIsOpenNav] = useState(true);
 
   const onToggleMenu = () => {
@@ -12,7 +12,10 @@ function DashBoardLayout({ children, onItemClick }) {
   };
 
   const leftNavBar = isOpenNav ? (
-    <LeftNavigationBar onItemClick={onItemClick} />
+    <LeftNavigationBar
+      onItemClick={onItemClick}
+      activeComponent={activeComponent}
+    />
   ) : null;
 
   return (
@@ -20,7 +23,7 @@ function DashBoardLayout({ children, onItemClick }) {
       <Header onHambugerClick={onToggleMenu} />
       <div className="body">
         {leftNavBar}
-        {children}
+        <div className="content">{children}</div>
       </div>
     </div>
   );

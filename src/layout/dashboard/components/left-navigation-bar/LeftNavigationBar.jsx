@@ -25,9 +25,17 @@ const NAV_ITEM = [
 ];
 
 function LeftNavigationBar(props) {
+  const classNames = (item) => {
+    return `item ${item.component === props.activeComponent ? "active" : ""}`;
+  };
+
   const listNav = NAV_ITEM.map((item, index) => {
     return (
-      <div className="item" key={index} onClick={() => props.onItemClick(item)}>
+      <div
+        className={classNames(item)}
+        key={index}
+        onClick={() => props.onItemClick(item)}
+      >
         {item.name}
       </div>
     );

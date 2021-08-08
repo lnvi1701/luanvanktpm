@@ -2,5 +2,9 @@
   .body {
     width: 100%;
     display: flex;
+    > .content {
+      padding: 20px;
+      width: 100%;
+    }
   }
 }
