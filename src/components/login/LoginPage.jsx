@@ -24,6 +24,7 @@ function LoginPage(props) {
     adminLogin(email, password)
       .then((res) => {
         if (res.error) throw res.error;
+        console.log(res);
       })
       .catch((err) => {
         setErr(err.message);
@@ -62,7 +63,6 @@ function LoginPage(props) {
           value={password}
           onChange={onPasswordChange}
         />
-
         {error}
         <Button variant="contained" color="primary" onClick={onSubmit}>
           {contentBtn}
