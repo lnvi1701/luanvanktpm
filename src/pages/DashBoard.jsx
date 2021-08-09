@@ -4,12 +4,14 @@ import ItemsManager from "../components/dashboard/items-manager/ItemsManager";
 import UsersManager from "../components/dashboard/users-manager/UsersManager";
 import CategoriesManager from "../components/dashboard/categories-manager/CategoriesManager";
 import RequestsBrowsingManager from "../components/dashboard/requests-browsing-manager/RequestsBrowsingManager";
+import ItemsTypeManager from "../components/dashboard/items-type-manager/ItemsTypeManager";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
 const COMPONENTS = {
+  ItemsTypeManager: <ItemsTypeManager />,
   ItemsManager: <ItemsManager />,
   UsersManager: <UsersManager />,
   CategoriesManager: <CategoriesManager />,
