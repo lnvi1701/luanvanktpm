@@ -1,0 +1,10 @@
+.itemsManager {
+  .actionsBlock {
+    display: flex;
+    justify-content: space-between;
+
+    > * {
+      cursor: pointer;
+    }
+  }
+}

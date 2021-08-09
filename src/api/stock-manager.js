@@ -20,3 +20,16 @@ export const adminLogin = (email, password) => {
       });
   });
 };
+
+export const getItems = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("items")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

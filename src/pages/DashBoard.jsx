@@ -5,6 +5,9 @@ import UsersManager from "../components/dashboard/users-manager/UsersManager";
 import CategoriesManager from "../components/dashboard/categories-manager/CategoriesManager";
 import RequestsBrowsingManager from "../components/dashboard/requests-browsing-manager/RequestsBrowsingManager";
 import { useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 const COMPONENTS = {
   ItemsManager: <ItemsManager />,
@@ -14,6 +17,18 @@ const COMPONENTS = {
 };
 
 function DashBoard(props) {
+  const history = useHistory();
+
+  useEffect(() => {
+    const checkUser = () => {
+      const { user } = props;
+      if (!user) {
+        history.push("/login");
+      }
+    };
+    checkUser();
+  });
+
   const [activeComponent, setActiveComponent] = useState("ItemsManager");
 
   const onItemClick = (item) => {
@@ -32,4 +47,10 @@ function DashBoard(props) {
   );
 }
 
-export default DashBoard;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps)(DashBoard);
