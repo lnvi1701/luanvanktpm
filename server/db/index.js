@@ -54,4 +54,23 @@ stockDB.getAllCategories = () => {
   });
 };
 
+stockDB.getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT u.id, first_name, last_name, CONCAT(first_name," ",last_name) AS full_name,
+              email, p.name AS permission,
+              p.id AS permission_id
+        FROM users u
+        LEFT JOIN permissions p
+            ON u.permission = p.id`,
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 module.exports = stockDB;
