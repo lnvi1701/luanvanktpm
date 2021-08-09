@@ -46,3 +46,16 @@ export const getCategories = () => {
       });
   });
 };
+
+export const getUsers = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("users")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

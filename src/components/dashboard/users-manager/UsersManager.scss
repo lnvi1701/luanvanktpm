@@ -1,0 +1,11 @@
+.usersManager {
+  .actionsBlock {
+    display: flex;
+    justify-content: space-between;
+    max-width: 60px;
+
+    > * {
+      cursor: pointer;
+    }
+  }
+}
