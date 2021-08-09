@@ -43,4 +43,15 @@ stockDB.getAllItems = () => {
   });
 };
 
+stockDB.getAllCategories = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM categories`, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 module.exports = stockDB;
