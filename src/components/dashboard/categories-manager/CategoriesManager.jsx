@@ -29,7 +29,6 @@ function CategoriesManager(props) {
   useEffect(() => {
     const getData = async () => {
       const data = await getCategories();
-      console.log(data);
       setList(data);
     };
     getData();
