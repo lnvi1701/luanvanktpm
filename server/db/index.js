@@ -26,4 +26,21 @@ stockDB.adminLogin = ({ email, password }) => {
   });
 };
 
+stockDB.getAllItems = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT it.id,it.name, c.name AS category,c.id AS category_id,unit,it.description
+        FROM item_types it 
+		    LEFT JOIN categories c 
+			    ON it.category = c.id;`,
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 module.exports = stockDB;
