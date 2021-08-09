@@ -33,3 +33,16 @@ export const getItems = () => {
       });
   });
 };
+
+export const getCategories = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("categories")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
