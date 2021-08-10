@@ -29,6 +29,33 @@ stockDB.adminLogin = ({ email, password }) => {
 stockDB.getAllItems = () => {
   return new Promise((resolve, reject) => {
     pool.query(
+      `SELECT i.id, it.name, input_time, output_time,expiry_time,
+              s.name AS status, s.id AS status_id,
+              st.name AS stock, st.id AS stock_id,
+              stp.name AS stock_type, stp.id AS stock_type_id
+        FROM items i
+        LEFT JOIN item_types it
+          ON i.type = it.id
+        LEFT JOIN statuses s
+          ON i.status = s.id
+        LEFT JOIN stocks st
+          ON i.stock_id = st.id
+        LEFT JOIN stock_types stp
+          ON st.type = stp.id
+        ORDER BY it.name`,
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
+stockDB.getAllItemsType = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(
       `SELECT it.id,it.name, c.name AS category,c.id AS category_id,unit,it.description
         FROM item_types it 
 		    LEFT JOIN categories c 

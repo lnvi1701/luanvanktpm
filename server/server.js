@@ -1,8 +1,9 @@
 const express = require("express");
 const login = require("./routers/login");
-const items = require("./routers/items");
+const itemsType = require("./routers/itemsType");
 const categories = require("./routers/categories");
 const users = require("./routers/users");
+const items = require("./routers/items");
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use("/admin/login", login);
 app.use("/items", items);
+app.use("/items-type", itemsType);
 app.use("/categories", categories);
 app.use("/users", users);
 
