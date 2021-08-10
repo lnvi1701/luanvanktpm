@@ -11,9 +11,28 @@ import EditIcon from "@material-ui/icons/Edit";
 import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
 import "./ItemsManager.scss";
+import { format } from "date-fns";
 
-function createData(id, name, category, unit, description) {
-  return { id, name, category, unit, description };
+function createData(
+  id,
+  name,
+  input_time,
+  output_time,
+  expiry_time,
+  status,
+  stock,
+  stock_type
+) {
+  return {
+    id,
+    name,
+    input_time,
+    output_time,
+    expiry_time,
+    status,
+    stock,
+    stock_type,
+  };
 }
 
 const useStyles = makeStyles({
@@ -29,6 +48,7 @@ function ItemsManager(props) {
   useEffect(() => {
     const getData = async () => {
       const data = await getItems();
+      console.log(data);
       setList(data);
     };
     getData();
@@ -36,7 +56,16 @@ function ItemsManager(props) {
 
   const rows = [
     ...list.map((item) =>
-      createData(item.id, item.name, item.category, item.unit, item.description)
+      createData(
+        item.id,
+        item.name,
+        item.input_time,
+        item.output_time,
+        item.expiry_time,
+        item.status,
+        item.stock,
+        item.stock_type
+      )
     ),
   ];
 
@@ -55,9 +84,11 @@ function ItemsManager(props) {
             <TableRow>
               <TableCell>Mã</TableCell>
               <TableCell>Tên</TableCell>
-              <TableCell>Danh mục</TableCell>
-              <TableCell>Đơn vị</TableCell>
-              <TableCell>Mô tả</TableCell>
+              <TableCell>Trạng thái</TableCell>
+              <TableCell>Vị trí</TableCell>
+              <TableCell>Ngày nhập</TableCell>
+              <TableCell>Hạn dùng</TableCell>
+              <TableCell>Ngày xuất</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -68,9 +99,11 @@ function ItemsManager(props) {
                   {row.id}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.category}</TableCell>
-                <TableCell>{row.unit}</TableCell>
-                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.status}</TableCell>
+                <TableCell>{`${row.stock} (${row.stock_type})`}</TableCell>
+                <TableCell>{getDate(row.input_time)}</TableCell>
+                <TableCell>{getDate(row.expiry_time)}</TableCell>
+                <TableCell>{getDate(row.output_time)}</TableCell>
                 <TableCell>{actionsBlock}</TableCell>
               </TableRow>
             ))}
@@ -80,5 +113,11 @@ function ItemsManager(props) {
     </div>
   );
 }
+
+const getDate = (stringDate) => {
+  if (!stringDate) return "--";
+  const cvDate = new Date(stringDate);
+  return format(cvDate, "dd/MM/yyyy");
+};
 
 export default ItemsManager;

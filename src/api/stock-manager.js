@@ -34,6 +34,19 @@ export const getItems = () => {
   });
 };
 
+export const getItemsType = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("items-type")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const getCategories = () => {
   return new Promise((resolve, reject) => {
     xebusInstance

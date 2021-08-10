@@ -11,8 +11,8 @@ import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
 const COMPONENTS = {
-  ItemsTypeManager: <ItemsTypeManager />,
   ItemsManager: <ItemsManager />,
+  ItemsTypeManager: <ItemsTypeManager />,
   UsersManager: <UsersManager />,
   CategoriesManager: <CategoriesManager />,
   RequestsBrowsingManager: <RequestsBrowsingManager />,

@@ -3,6 +3,11 @@ import "./leftNavigationBar.scss";
 
 const NAV_ITEM = [
   {
+    name: "Quản lý danh sách vật tư",
+    component: "ItemsManager",
+    accessRights: ["user", "admin"],
+  },
+  {
     name: "Quản lý loại vật tư",
     component: "ItemsTypeManager",
     accessRights: ["user", "admin"],

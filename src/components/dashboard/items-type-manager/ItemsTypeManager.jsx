@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React, { useEffect, useState } from "react";
-import { getItems } from "../../../api/stock-manager";
+import { getItemsType } from "../../../api/stock-manager";
 import "./ItemsTypeManager.scss";
 
 function createData(id, name, category, unit, description) {
@@ -28,7 +28,7 @@ function ItemsTypeManager(props) {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getItems();
+      const data = await getItemsType();
       setList(data);
     };
     getData();
