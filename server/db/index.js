@@ -100,4 +100,15 @@ stockDB.getAllUsers = () => {
   });
 };
 
+stockDB.getStatuses = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM statuses`, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 module.exports = stockDB;

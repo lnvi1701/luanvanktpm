@@ -4,6 +4,7 @@ const itemsType = require("./routers/itemsType");
 const categories = require("./routers/categories");
 const users = require("./routers/users");
 const items = require("./routers/items");
+const statuses = require("./routers/statuses");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/items", items);
 app.use("/items-type", itemsType);
 app.use("/categories", categories);
 app.use("/users", users);
+app.use("/statuses", statuses);
 
 const port = process.env.PORT || 5000;
 
