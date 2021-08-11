@@ -12,28 +12,7 @@ import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
 import "./ItemsManager.scss";
 import { format } from "date-fns";
-
-function createData(
-  id,
-  name,
-  input_time,
-  output_time,
-  expiry_time,
-  status,
-  stock,
-  stock_type
-) {
-  return {
-    id,
-    name,
-    input_time,
-    output_time,
-    expiry_time,
-    status,
-    stock,
-    stock_type,
-  };
-}
+import DialogEditItem from "./components/DialogEditItem";
 
 const useStyles = makeStyles({
   table: {
@@ -42,15 +21,28 @@ const useStyles = makeStyles({
 });
 
 function ItemsManager(props) {
-  const [list, setList] = useState([]);
   const classes = useStyles();
+  const [list, setList] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleClickOpen = (item) => {
+    setOpen(true);
+    setSelectedItem(item);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItem(null);
+  };
+
+  const getData = async () => {
+    const data = await getItems();
+    console.log(data);
+    setList(data);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      const data = await getItems();
-      console.log(data);
-      setList(data);
-    };
     getData();
   }, []);
 
@@ -64,17 +56,24 @@ function ItemsManager(props) {
         item.expiry_time,
         item.status,
         item.stock,
-        item.stock_type
+        item.stock_type,
+        item.status_id,
+        item.stock_id,
+        item.stock_type_id,
+        item.description,
+        item.type_id
       )
     ),
   ];
 
-  const actionsBlock = (
-    <div className="actionsBlock">
-      <EditIcon />
-      <DeleteIcon />
-    </div>
-  );
+  const actionsBlock = (item) => {
+    return (
+      <div className="actionsBlock">
+        <EditIcon onClick={() => handleClickOpen(item)} />
+        <DeleteIcon />
+      </div>
+    );
+  };
 
   return (
     <div className="itemsManager">
@@ -89,6 +88,7 @@ function ItemsManager(props) {
               <TableCell>Ngày nhập</TableCell>
               <TableCell>Hạn dùng</TableCell>
               <TableCell>Ngày xuất</TableCell>
+              <TableCell>Mô tả</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -104,12 +104,21 @@ function ItemsManager(props) {
                 <TableCell>{getDate(row.input_time)}</TableCell>
                 <TableCell>{getDate(row.expiry_time)}</TableCell>
                 <TableCell>{getDate(row.output_time)}</TableCell>
-                <TableCell>{actionsBlock}</TableCell>
+                <TableCell>{row.description}</TableCell>
+                <TableCell>{actionsBlock(row)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {open ? (
+        <DialogEditItem
+          open={open}
+          handleClose={handleClose}
+          selectedItem={selectedItem}
+          onUpdateSuccess={() => getData()}
+        />
+      ) : null}
     </div>
   );
 }
@@ -118,6 +127,38 @@ const getDate = (stringDate) => {
   if (!stringDate) return "--";
   const cvDate = new Date(stringDate);
   return format(cvDate, "dd/MM/yyyy");
+};
+
+const createData = (
+  id,
+  name,
+  input_time,
+  output_time,
+  expiry_time,
+  status,
+  stock,
+  stock_type,
+  status_id,
+  stock_id,
+  stock_type_id,
+  description,
+  type_id
+) => {
+  return {
+    id,
+    name,
+    input_time,
+    output_time,
+    expiry_time,
+    status,
+    stock,
+    stock_type,
+    status_id,
+    stock_id,
+    stock_type_id,
+    description,
+    type_id,
+  };
 };
 
 export default ItemsManager;

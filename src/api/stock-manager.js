@@ -72,3 +72,42 @@ export const getUsers = () => {
       });
   });
 };
+
+export const getStatuses = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("statuses")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getStocks = () => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("stocks")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const updateItem = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("update-item", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
