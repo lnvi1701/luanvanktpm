@@ -46,6 +46,11 @@ function ItemsManager(props) {
     getData();
   }, []);
 
+  const handleUpdateDataSuccess = () => {
+    getData();
+    handleClose();
+  };
+
   const rows = [
     ...list.map((item) =>
       createData(
@@ -116,7 +121,7 @@ function ItemsManager(props) {
           open={open}
           handleClose={handleClose}
           selectedItem={selectedItem}
-          onUpdateSuccess={() => getData()}
+          onUpdateSuccess={handleUpdateDataSuccess}
         />
       ) : null}
     </div>

@@ -94,6 +94,7 @@ export default function FormDialog({
     };
     updateItem(payload)
       .then((res) => {
+        console.log("pl: ", payload);
         onUpdateSuccess();
       })
       .catch((err) => {
