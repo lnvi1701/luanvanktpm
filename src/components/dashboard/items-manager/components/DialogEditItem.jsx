@@ -174,7 +174,7 @@ export default function DialogEditItem({
                   variant="inline"
                   format="dd/MM/yyyy"
                   margin="normal"
-                  label="Hạn sử dụng"
+                  label="Ngày hết hạn"
                   value={expiryTime}
                   onChange={(val) => setExpiryTime(val)}
                   KeyboardButtonProps={{
@@ -182,6 +182,7 @@ export default function DialogEditItem({
                   }}
                 />
                 <KeyboardDatePicker
+                  disabled
                   disableToolbar
                   variant="inline"
                   format="dd/MM/yyyy"

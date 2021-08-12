@@ -29,7 +29,7 @@ export default function DialogAddNewItem({
   const [statusId, setStatusId] = useState("1");
   const [stockId, setStockId] = useState("1");
   const [description, setDescription] = useState("");
-  const [inputTime, setInputTime] = useState(null);
+  const [inputTime, setInputTime] = useState(new Date());
   const [expiryTime, setExpiryTime] = useState(null);
   const [outputTime, setOutputTime] = useState(null);
 
@@ -168,7 +168,7 @@ export default function DialogAddNewItem({
                   variant="inline"
                   format="dd/MM/yyyy"
                   margin="normal"
-                  label="Hạn sử dụng"
+                  label="Ngày hết hạn"
                   value={expiryTime}
                   onChange={(val) => setExpiryTime(val)}
                   KeyboardButtonProps={{
@@ -176,6 +176,7 @@ export default function DialogAddNewItem({
                   }}
                 />
                 <KeyboardDatePicker
+                  disabled
                   disableToolbar
                   variant="inline"
                   format="dd/MM/yyyy"

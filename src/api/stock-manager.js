@@ -21,10 +21,10 @@ export const adminLogin = (email, password) => {
   });
 };
 
-export const getItems = () => {
+export const getItems = (orderby, sort_order) => {
   return new Promise((resolve, reject) => {
     xebusInstance
-      .get("items")
+      .get(`items?orderby=${orderby}&sort_order=${sort_order}`)
       .then((response) => {
         resolve(response.data);
       })

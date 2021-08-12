@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import Select from "@material-ui/core/Select";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
@@ -23,6 +24,22 @@ const useStyles = makeStyles({
   },
 });
 
+// "name", "status_id", "input_time", "output_time", "expiry_time"
+
+const SORT_OPTIONS = [
+  { value: "id", label: "Mã" },
+  { value: "name", label: "Tên" },
+  { value: "status_id", label: "Trạng thái" },
+  { value: "input_time", label: "Ngày nhập" },
+  { value: "output_time", label: "Ngày xuất" },
+  { value: "expiry_time", label: "Ngày hết hạn" },
+];
+
+const SORT_ORDER_OPTIONS = [
+  { value: "ASC", label: "Tăng dần" },
+  { value: "DESC", label: "Giảm dần" },
+];
+
 function ItemsManager(props) {
   const classes = useStyles();
   const [list, setList] = useState([]);
@@ -31,6 +48,8 @@ function ItemsManager(props) {
   const [openEditItem, setOpenEditItem] = useState(false);
   const [openAddNewItem, setOpenAddNewItem] = useState(false);
   const [openAlertRemove, setOpenAlertRemove] = useState(false);
+  const [sortProperty, setSortProperty] = useState("id");
+  const [sortOrder, setSortOrder] = useState("ASC");
 
   const handleClickOpen = (item) => {
     setOpenEditItem(true);
@@ -43,14 +62,13 @@ function ItemsManager(props) {
   };
 
   const getData = async () => {
-    const data = await getItems();
-    console.log(data);
+    const data = await getItems(sortProperty, sortOrder);
     setList(data);
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    getData(sortProperty, sortOrder);
+  });
 
   const handleUpdateDataSuccess = () => {
     getData();
@@ -118,9 +136,42 @@ function ItemsManager(props) {
     />
   ) : null;
 
+  const selectSort = (
+    <div className="selectSort">
+      Sắp xếp theo:&nbsp;
+      <Select
+        native
+        label="Sắp xếp"
+        value={sortProperty}
+        onChange={(e) => setSortProperty(e.target.value)}
+      >
+        {SORT_OPTIONS.map((item) => (
+          <option key={item.value} value={item.value}>
+            {item.label}
+          </option>
+        ))}
+      </Select>
+      Thứ tự:&nbsp;
+      <Select
+        native
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+      >
+        {SORT_ORDER_OPTIONS.map((item) => (
+          <option key={item.value} value={item.value}>
+            {item.label}
+          </option>
+        ))}
+      </Select>
+    </div>
+  );
+
   return (
     <div className="itemsManager">
-      <Button onClick={() => setOpenAddNewItem(true)}>Thêm sản phẩm</Button>
+      <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
+        Thêm sản phẩm
+      </Button>
+      {selectSort}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -130,7 +181,7 @@ function ItemsManager(props) {
               <TableCell>Trạng thái</TableCell>
               <TableCell>Vị trí</TableCell>
               <TableCell>Ngày nhập</TableCell>
-              <TableCell>Hạn dùng</TableCell>
+              <TableCell>Ngày hết hạn</TableCell>
               <TableCell>Ngày xuất</TableCell>
               <TableCell>Mô tả</TableCell>
               <TableCell>Actions</TableCell>
