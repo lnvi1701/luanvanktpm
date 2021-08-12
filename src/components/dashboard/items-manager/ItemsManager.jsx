@@ -1,3 +1,4 @@
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -11,9 +12,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
-import DialogEditItem from "./components/DialogEditItem";
 import DialogAddNewItem from "./components/DialogAddNewItem";
-import Button from "@material-ui/core/Button";
+import DialogEditItem from "./components/DialogEditItem";
 import "./ItemsManager.scss";
 
 const useStyles = makeStyles({
