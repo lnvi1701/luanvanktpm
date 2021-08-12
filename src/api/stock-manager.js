@@ -124,3 +124,16 @@ export const addItem = (payload) => {
       });
   });
 };
+
+export const deleteItem = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("items/delete", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

@@ -87,6 +87,7 @@ export default function DialogAddNewItem({
       .then((res) => {
         console.log("pl: ", payload);
         onUpdateSuccess();
+        handleClose();
       })
       .catch((err) => {
         console.log(err);

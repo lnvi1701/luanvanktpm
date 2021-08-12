@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
 import DialogAddNewItem from "./components/DialogAddNewItem";
 import DialogEditItem from "./components/DialogEditItem";
+import DialogAlertRemove from "./components/DialogAlertRemove";
 import "./ItemsManager.scss";
 
 const useStyles = makeStyles({
@@ -29,6 +30,7 @@ function ItemsManager(props) {
 
   const [openEditItem, setOpenEditItem] = useState(false);
   const [openAddNewItem, setOpenAddNewItem] = useState(false);
+  const [openAlertRemove, setOpenAlertRemove] = useState(false);
 
   const handleClickOpen = (item) => {
     setOpenEditItem(true);
@@ -55,6 +57,11 @@ function ItemsManager(props) {
     handleClose();
   };
 
+  const handleDeleteItem = (item) => {
+    setOpenAlertRemove(true);
+    setSelectedItem(item);
+  };
+
   const rows = [
     ...list.map((item) =>
       createData(
@@ -79,7 +86,7 @@ function ItemsManager(props) {
     return (
       <div className="actionsBlock">
         <EditIcon onClick={() => handleClickOpen(item)} />
-        <DeleteIcon />
+        <DeleteIcon onClick={() => handleDeleteItem(item)} />
       </div>
     );
   };
@@ -99,6 +106,15 @@ function ItemsManager(props) {
       handleClose={() => setOpenAddNewItem(false)}
       selectedItem={selectedItem}
       onUpdateSuccess={handleUpdateDataSuccess}
+    />
+  ) : null;
+
+  const dialogAlertRemove = openAlertRemove ? (
+    <DialogAlertRemove
+      open={openAlertRemove}
+      handleClose={() => setOpenAlertRemove(false)}
+      selectedItem={selectedItem}
+      onSuccess={() => getData()}
     />
   ) : null;
 
@@ -141,6 +157,7 @@ function ItemsManager(props) {
       </TableContainer>
       {dialogEditItem}
       {dialogAddNewItem}
+      {dialogAlertRemove}
     </div>
   );
 }
