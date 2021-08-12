@@ -29,7 +29,8 @@ stockDB.adminLogin = ({ email, password }) => {
 stockDB.getAllItems = () => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT i.id, it.name, input_time, output_time,expiry_time,
+      `SELECT i.id, it.name, input_time, output_time, expiry_time, i.description,
+              it.id AS type_id,
               s.name AS status, s.id AS status_id,
               st.name AS stock, st.id AS stock_id,
               stp.name AS stock_type, stp.id AS stock_type_id
@@ -41,8 +42,7 @@ stockDB.getAllItems = () => {
         LEFT JOIN stocks st
           ON i.stock_id = st.id
         LEFT JOIN stock_types stp
-          ON st.type = stp.id
-        ORDER BY it.name`,
+          ON st.type = stp.id`,
       (err, result) => {
         if (err) {
           return reject(err);
@@ -81,6 +81,17 @@ stockDB.getAllCategories = () => {
   });
 };
 
+stockDB.getStocks = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM stocks`, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 stockDB.getAllUsers = () => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -107,6 +118,96 @@ stockDB.getStatuses = () => {
         return reject(err);
       }
       return resolve(result);
+    });
+  });
+};
+
+stockDB.updateItem = ({
+  id,
+  type,
+  input_time,
+  output_time,
+  expiry_time,
+  status,
+  stock_id,
+  description,
+}) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE items
+              SET type = ?, input_time = ?,expiry_time = ?, output_time = ?, status = ?, stock_id = ?, description = ?
+              WHERE id = ?`,
+      [
+        type,
+        input_time,
+        expiry_time,
+        output_time,
+        status,
+        stock_id,
+        description,
+        id,
+      ],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.addItem = ({
+  type,
+  input_time,
+  output_time,
+  expiry_time,
+  status,
+  stock_id,
+  description,
+}) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO items (type, input_time, expiry_time, output_time, status, stock_id, description) 
+        VALUES (?, ? , ? , ?, ?, ?, ?)`,
+      [
+        type,
+        input_time,
+        expiry_time,
+        output_time,
+        status,
+        stock_id,
+        description,
+      ],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.deleteItem = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`DELETE FROM items WHERE id = ?`, [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve({
+        success: {
+          message: "delete success",
+        },
+      });
     });
   });
 };
