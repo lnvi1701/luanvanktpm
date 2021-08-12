@@ -8,11 +8,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
-import "./ItemsManager.scss";
-import { format } from "date-fns";
 import DialogEditItem from "./components/DialogEditItem";
+import DialogAddNewItem from "./components/DialogAddNewItem";
+import Button from "@material-ui/core/Button";
+import "./ItemsManager.scss";
 
 const useStyles = makeStyles({
   table: {
@@ -23,16 +25,18 @@ const useStyles = makeStyles({
 function ItemsManager(props) {
   const classes = useStyles();
   const [list, setList] = useState([]);
-  const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const [openEditItem, setOpenEditItem] = useState(false);
+  const [openAddNewItem, setOpenAddNewItem] = useState(false);
+
   const handleClickOpen = (item) => {
-    setOpen(true);
+    setOpenEditItem(true);
     setSelectedItem(item);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenEditItem(false);
     setSelectedItem(null);
   };
 
@@ -80,8 +84,27 @@ function ItemsManager(props) {
     );
   };
 
+  const dialogEditItem = openEditItem ? (
+    <DialogEditItem
+      open={openEditItem}
+      handleClose={handleClose}
+      selectedItem={selectedItem}
+      onUpdateSuccess={handleUpdateDataSuccess}
+    />
+  ) : null;
+
+  const dialogAddNewItem = openAddNewItem ? (
+    <DialogAddNewItem
+      open={openAddNewItem}
+      handleClose={() => setOpenAddNewItem(false)}
+      selectedItem={selectedItem}
+      onUpdateSuccess={handleUpdateDataSuccess}
+    />
+  ) : null;
+
   return (
     <div className="itemsManager">
+      <Button onClick={() => setOpenAddNewItem(true)}>Thêm sản phẩm</Button>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -116,14 +139,8 @@ function ItemsManager(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      {open ? (
-        <DialogEditItem
-          open={open}
-          handleClose={handleClose}
-          selectedItem={selectedItem}
-          onUpdateSuccess={handleUpdateDataSuccess}
-        />
-      ) : null}
+      {dialogEditItem}
+      {dialogAddNewItem}
     </div>
   );
 }

@@ -102,7 +102,20 @@ export const getStocks = () => {
 export const updateItem = (payload) => {
   return new Promise((resolve, reject) => {
     xebusInstance
-      .post("update-item", payload)
+      .post("items/update", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const addItem = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("items/add", payload)
       .then((response) => {
         resolve(response.data);
       })

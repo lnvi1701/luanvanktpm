@@ -17,30 +17,21 @@ import { statuses } from "../../../../meta-data/statuses";
 import { stocks } from "../../../../meta-data/stocks";
 import "./DialogEditItem.scss";
 import { format } from "date-fns";
-import { updateItem } from "../../../../api/stock-manager";
+import { addItem } from "../../../../api/stock-manager";
 
-export default function DialogEditItem({
+export default function DialogAddNewItem({
   open,
   handleClose,
-  selectedItem,
   onUpdateSuccess,
 }) {
   // modal value
-  const [typeId, setTypeId] = useState(selectedItem.type_id);
-  const [statusId, setStatusId] = useState(selectedItem.status_id);
-  const [stockId, setStockId] = useState(selectedItem.stock_id);
-  const [description, setDescription] = useState(
-    selectedItem.description || ""
-  );
-  const [inputTime, setInputTime] = useState(
-    selectedItem.input_time ? new Date(selectedItem.input_time) : null
-  );
-  const [expiryTime, setExpiryTime] = useState(
-    selectedItem.expiry_time ? new Date(selectedItem.expiry_time) : null
-  );
-  const [outputTime, setOutputTime] = useState(
-    selectedItem.output_time ? new Date(selectedItem.output_time) : null
-  );
+  const [typeId, setTypeId] = useState("1");
+  const [statusId, setStatusId] = useState("1");
+  const [stockId, setStockId] = useState("1");
+  const [description, setDescription] = useState("");
+  const [inputTime, setInputTime] = useState(null);
+  const [expiryTime, setExpiryTime] = useState(null);
+  const [outputTime, setOutputTime] = useState(null);
 
   // list options
   const [statusOptions, setStatusOptions] = useState([]);
@@ -83,7 +74,6 @@ export default function DialogEditItem({
 
   const handleSubmitForm = () => {
     const payload = {
-      id: selectedItem.id,
       type: typeId,
       input_time: inputTime ? format(inputTime, "yyyy-MM-dd") : null,
       output_time: outputTime ? format(outputTime, "yyyy-MM-dd") : null,
@@ -92,7 +82,8 @@ export default function DialogEditItem({
       stock_id: stockId,
       description: description,
     };
-    updateItem(payload)
+    console.log(payload);
+    addItem(payload)
       .then((res) => {
         console.log("pl: ", payload);
         onUpdateSuccess();
@@ -111,9 +102,7 @@ export default function DialogEditItem({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          Edit: {selectedItem && `${selectedItem.name} (${selectedItem.id})`}
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">Add new Item</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <Select
@@ -123,6 +112,7 @@ export default function DialogEditItem({
               value={typeId}
               onChange={handleTypeIdChange}
             >
+              <option value={null}></option>
               {itemTypes.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -136,6 +126,7 @@ export default function DialogEditItem({
               value={statusId}
               onChange={handleStatusChange}
             >
+              <option value={null}></option>
               {statusOptions.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -143,12 +134,14 @@ export default function DialogEditItem({
               ))}
             </Select>
             <Select
+              displayEmpty
               native
               fullWidth
               label="Stock"
               value={stockId}
               onChange={handleStockChange}
             >
+              <option value={null}></option>
               {stockOptions.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
