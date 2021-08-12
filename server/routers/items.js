@@ -6,7 +6,9 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    let results = await dbLogin.getAllItems();
+    const { orderby, sort_order } = req.query;
+    console.log(orderby, sort_order);
+    let results = await dbLogin.getAllItems(orderby, sort_order);
     res.json(results);
   } catch (err) {
     console.log(err);

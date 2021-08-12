@@ -26,7 +26,7 @@ stockDB.adminLogin = ({ email, password }) => {
   });
 };
 
-stockDB.getAllItems = () => {
+stockDB.getAllItems = (orderby, sort_order) => {
   return new Promise((resolve, reject) => {
     pool.query(
       `SELECT i.id, it.name, input_time, output_time, expiry_time, i.description,
@@ -42,7 +42,8 @@ stockDB.getAllItems = () => {
         LEFT JOIN stocks st
           ON i.stock_id = st.id
         LEFT JOIN stock_types stp
-          ON st.type = stp.id`,
+          ON st.type = stp.id
+        ORDER BY ${orderby} ${sort_order}`,
       (err, result) => {
         if (err) {
           return reject(err);
