@@ -31,7 +31,7 @@ function DashBoard(props) {
     checkUser();
   });
 
-  const [activeComponent, setActiveComponent] = useState("ItemsManager");
+  const [activeComponent, setActiveComponent] = useState("ItemsTypeManager");
 
   const onItemClick = (item) => {
     setActiveComponent(item.component);

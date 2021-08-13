@@ -22,8 +22,6 @@ const useStyles = makeStyles({
   table: {},
 });
 
-// "name", "status_id", "input_time", "output_time", "expiry_time"
-
 const SORT_OPTIONS = [
   { value: "id", label: "Mã" },
   { value: "name", label: "Tên" },
@@ -167,7 +165,7 @@ function ItemsManager(props) {
   return (
     <div className="itemsManager">
       <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
-        Thêm sản phẩm
+        Thêm vật tư
       </Button>
       {selectSort}
       <TableContainer component={Paper}>

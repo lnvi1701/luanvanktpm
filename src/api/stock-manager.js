@@ -34,10 +34,10 @@ export const getItems = (orderby, sort_order) => {
   });
 };
 
-export const getItemsType = () => {
+export const getItemsType = (sortProperty, sortOrder) => {
   return new Promise((resolve, reject) => {
     xebusInstance
-      .get("items-type")
+      .get(`items-type?sort_property=${sortProperty}&sort_order=${sortOrder}`)
       .then((response) => {
         resolve(response.data);
       })

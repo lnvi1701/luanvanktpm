@@ -113,7 +113,6 @@ export default function DialogAddNewItem({
               value={typeId}
               onChange={handleTypeIdChange}
             >
-              <option value={null}></option>
               {itemTypes.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -127,7 +126,6 @@ export default function DialogAddNewItem({
               value={statusId}
               onChange={handleStatusChange}
             >
-              <option value={null}></option>
               {statusOptions.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -142,7 +140,6 @@ export default function DialogAddNewItem({
               value={stockId}
               onChange={handleStockChange}
             >
-              <option value={null}></option>
               {stockOptions.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}

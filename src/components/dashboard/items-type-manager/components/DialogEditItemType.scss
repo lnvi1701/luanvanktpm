@@ -1,0 +1,9 @@
+.formEditItem {
+  > * {
+    margin-bottom: 24px !important;
+  }
+  .textArea {
+    width: 100%;
+    resize: vertical;
+  }
+}
