@@ -7,8 +7,8 @@ import Select from "@material-ui/core/Select";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
+import { addItemType } from "../../../../api/stock-manager";
 import { getListCategories } from "../../../../meta-data/categories";
-import TextError from "../../../common/text-error/TextError";
 import "./DialogEditItemType.scss";
 
 export default function DialogAddNewItemType({
@@ -27,7 +27,7 @@ export default function DialogAddNewItemType({
 
   // error state
 
-  const [nameErr, setNameErr] = useState("");
+  const [nameErr, setNameErr] = useState(null);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -44,10 +44,11 @@ export default function DialogAddNewItemType({
   };
 
   const handleCheckValidateName = (event) => {
-    const { value } = event.target;
-    if (!value) {
+    if (!event || !event.target.value) {
       setNameErr("Không được bỏ trống tên");
+      return;
     }
+    setNameErr(null);
   };
 
   const handleCategoryChange = (event) => {
@@ -67,10 +68,15 @@ export default function DialogAddNewItemType({
       unit,
       description,
     };
-    console.log(payload);
-  };
 
-  const renderNameErr = nameErr ? <TextError>{nameErr}</TextError> : null;
+    addItemType(payload)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="dialogAddNewItemType">
@@ -90,8 +96,9 @@ export default function DialogAddNewItemType({
               value={name}
               onChange={handleNameChange}
               onBlur={handleCheckValidateName}
+              error={nameErr}
+              helperText={nameErr}
             />
-            {renderNameErr}
             <Select
               native
               fullWidth
@@ -125,7 +132,7 @@ export default function DialogAddNewItemType({
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmitForm} color="primary">
+          <Button onClick={handleSubmitForm} color="primary" disabled={!name}>
             Submit
           </Button>
         </DialogActions>

@@ -1,14 +1,15 @@
 .itemsTypeManager {
-  .actionsBlock {
-    display: flex;
-    justify-content: space-between;
-    max-width: 60px;
-
-    > * {
-      cursor: pointer;
-    }
-  }
   .selectSort {
     text-align: right;
+  }
+}
+
+.actionsBlock {
+  display: flex;
+  justify-content: space-between;
+  max-width: 60px;
+
+  > * {
+    cursor: pointer;
   }
 }

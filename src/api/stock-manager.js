@@ -137,3 +137,16 @@ export const deleteItem = (payload) => {
       });
   });
 };
+
+export const addItemType = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("items-type/add", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
