@@ -38,4 +38,15 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
+router.post("/delete", async (req, res, next) => {
+  try {
+    const payload = req.body;
+    let results = await dbLogin.deleteItemType(payload);
+    res.json(results);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

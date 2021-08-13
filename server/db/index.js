@@ -255,4 +255,19 @@ stockDB.updateItemType = ({ id, name, category, unit, description }) => {
   });
 };
 
+stockDB.deleteItemType = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`DELETE FROM item_types WHERE id = ?`, [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve({
+        success: {
+          message: "delete success",
+        },
+      });
+    });
+  });
+};
+
 module.exports = stockDB;
