@@ -1,9 +1,12 @@
-.formEditItem {
-  > * {
-    margin-bottom: 24px !important;
-  }
-  .textArea {
-    width: 100%;
-    resize: vertical;
+.dialogAddNewItemType {
+  .formEditItem {
+    > * {
+      margin: 24px 0 0 !important ;
+    }
+
+    .textArea {
+      width: 100%;
+      resize: vertical;
+    }
   }
 }

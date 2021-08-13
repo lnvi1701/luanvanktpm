@@ -11,13 +11,12 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { addItem } from "../../../../api/stock-manager";
 import { getItemTypes } from "../../../../meta-data/item-types";
 import { statuses } from "../../../../meta-data/statuses";
 import { stocks } from "../../../../meta-data/stocks";
-import "./DialogEditItem.scss";
-import { format } from "date-fns";
-import { addItem } from "../../../../api/stock-manager";
 
 export default function DialogAddNewItem({
   open,

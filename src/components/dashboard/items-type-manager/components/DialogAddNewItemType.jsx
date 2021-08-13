@@ -8,8 +8,8 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
 import { getListCategories } from "../../../../meta-data/categories";
+import TextError from "../../../common/text-error/TextError";
 import "./DialogEditItemType.scss";
-import { useForm } from "react-hook-form";
 
 export default function DialogAddNewItemType({
   open,
@@ -25,10 +25,13 @@ export default function DialogAddNewItemType({
   // list options
   const [categories, setCategories] = useState([]);
 
+  // error state
+
+  const [nameErr, setNameErr] = useState("");
+
   useEffect(() => {
     const getCategories = async () => {
       const categories = await getListCategories();
-      console.log(categories);
       setCategories(categories);
     };
 
@@ -38,6 +41,13 @@ export default function DialogAddNewItemType({
   const handleNameChange = (event) => {
     const { value } = event.target;
     setName(value);
+  };
+
+  const handleCheckValidateName = (event) => {
+    const { value } = event.target;
+    if (!value) {
+      setNameErr("Không được bỏ trống tên");
+    }
   };
 
   const handleCategoryChange = (event) => {
@@ -60,8 +70,10 @@ export default function DialogAddNewItemType({
     console.log(payload);
   };
 
+  const renderNameErr = nameErr ? <TextError>{nameErr}</TextError> : null;
+
   return (
-    <div className="dialogEditItem">
+    <div className="dialogAddNewItemType">
       <Dialog
         open={open}
         fullWidth
@@ -77,7 +89,9 @@ export default function DialogAddNewItemType({
               label="Tên vật tư"
               value={name}
               onChange={handleNameChange}
+              onBlur={handleCheckValidateName}
             />
+            {renderNameErr}
             <Select
               native
               fullWidth
@@ -101,7 +115,7 @@ export default function DialogAddNewItemType({
               value={description}
               className="textArea"
               aria-label="minimum height"
-              minRows={3}
+              minRows={8}
               placeholder="Mô tả"
               onChange={(e) => setDescription(e.target.value)}
             />

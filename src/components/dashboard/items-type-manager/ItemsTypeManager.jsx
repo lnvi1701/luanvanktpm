@@ -12,7 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React, { useEffect, useState } from "react";
 import { getItemsType } from "../../../api/stock-manager";
-import "./ItemsTypeManager.scss";
+import styles from "./ItemsTypeManager.scss";
 import DialogAddNewItemType from "./components/DialogAddNewItemType";
 
 function createData(id, name, category, unit, description) {
@@ -131,7 +131,7 @@ function ItemsTypeManager(props) {
   ) : null;
 
   return (
-    <div className="itemsTypeManager">
+    <div className={styles.itemsTypeManager}>
       <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
         Thêm loại vật tư
       </Button>

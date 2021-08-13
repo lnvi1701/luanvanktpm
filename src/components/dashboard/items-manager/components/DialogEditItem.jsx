@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { getItemTypes } from "../../../../meta-data/item-types";
 import { statuses } from "../../../../meta-data/statuses";
 import { stocks } from "../../../../meta-data/stocks";
-import "./DialogEditItem.scss";
+import styles from "./DialogEditItem.scss";
 import { format } from "date-fns";
 import { updateItem } from "../../../../api/stock-manager";
 
@@ -115,7 +115,7 @@ export default function DialogEditItem({
           Edit: {selectedItem && `${selectedItem.name} (${selectedItem.id})`}
         </DialogTitle>
         <DialogContent>
-          <form className="formEditItem">
+          <form className={styles.formEditItem}>
             <Select
               native
               fullWidth
