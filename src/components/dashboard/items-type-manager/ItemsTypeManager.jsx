@@ -15,6 +15,7 @@ import { getItemsType } from "../../../api/stock-manager";
 import "./ItemsTypeManager.scss";
 import DialogAddNewItemType from "./components/DialogAddNewItemType";
 import DialogEditItemType from "./components/DialogEditItemType";
+import DialogAlertRemoveItemType from "./components/DialogAlertRemoveItemType";
 
 function createData(id, name, category, unit, description, category_id) {
   return { id, name, category, unit, description, category_id };
@@ -152,6 +153,15 @@ function ItemsTypeManager(props) {
     />
   ) : null;
 
+  const dialogAlertRemove = openAlertRemove ? (
+    <DialogAlertRemoveItemType
+      open={openAlertRemove}
+      handleClose={() => setOpenAlertRemove(false)}
+      selectedItem={selectedItem}
+      onSuccess={() => getData(sortProperty, sortOrder)}
+    />
+  ) : null;
+
   return (
     <div className="itemsTypeManager">
       <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
@@ -188,6 +198,7 @@ function ItemsTypeManager(props) {
       </TableContainer>
       {dialogAddNewItemType}
       {dialogEditItemType}
+      {dialogAlertRemove}
     </div>
   );
 }

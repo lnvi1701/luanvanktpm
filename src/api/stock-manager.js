@@ -163,3 +163,16 @@ export const updateItemType = (payload) => {
       });
   });
 };
+
+export const deleteItemType = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("items-type/delete", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
