@@ -54,13 +54,14 @@ stockDB.getAllItems = (orderby, sort_order) => {
   });
 };
 
-stockDB.getAllItemsType = () => {
+stockDB.getAllItemsType = (sort_property, sort_order) => {
   return new Promise((resolve, reject) => {
     pool.query(
       `SELECT it.id,it.name, c.name AS category,c.id AS category_id,unit,it.description
         FROM item_types it 
 		    LEFT JOIN categories c 
-			    ON it.category = c.id;`,
+			    ON it.category = c.id
+        ORDER BY ${sort_property || ""} ${sort_order}`,
       (err, result) => {
         if (err) {
           return reject(err);
@@ -210,6 +211,47 @@ stockDB.deleteItem = ({ id }) => {
         },
       });
     });
+  });
+};
+
+stockDB.addItemType = ({ name, category, unit, description }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO item_types (name, category, unit, description) 
+        VALUES (?, ? , ? , ?)`,
+      [name, category, unit, description],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "add success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.updateItemType = ({ id, name, category, unit, description }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE item_types
+              SET name = ?, category = ?, unit = ?, description = ?
+              WHERE id = ?`,
+      [name, category, unit, description, id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
   });
 };
 
