@@ -21,7 +21,7 @@ export default function DialogAddNewItemType({
   const [name, setName] = useState(selectedItem.name);
   const [category, setCategory] = useState(selectedItem.category_id);
   const [unit, setUnit] = useState(selectedItem.unit);
-  const [description, setDescription] = useState(selectedItem.descriptions);
+  const [description, setDescription] = useState(selectedItem.description);
 
   // list options
   const [categories, setCategories] = useState([]);
