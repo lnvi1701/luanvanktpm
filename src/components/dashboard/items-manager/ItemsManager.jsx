@@ -19,9 +19,7 @@ import DialogAlertRemove from "./components/DialogAlertRemove";
 import "./ItemsManager.scss";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
+  table: {},
 });
 
 // "name", "status_id", "input_time", "output_time", "expiry_time"
@@ -61,17 +59,17 @@ function ItemsManager(props) {
     setSelectedItem(null);
   };
 
-  const getData = async () => {
+  const getData = async (sortProperty, sortOrder) => {
     const data = await getItems(sortProperty, sortOrder);
     setList(data);
   };
 
   useEffect(() => {
     getData(sortProperty, sortOrder);
-  });
+  }, [sortProperty, sortOrder]);
 
   const handleUpdateDataSuccess = () => {
-    getData();
+    getData(sortProperty, sortOrder);
     handleClose();
   };
 
@@ -132,7 +130,7 @@ function ItemsManager(props) {
       open={openAlertRemove}
       handleClose={() => setOpenAlertRemove(false)}
       selectedItem={selectedItem}
-      onSuccess={() => getData()}
+      onSuccess={() => getData(sortProperty, sortOrder)}
     />
   ) : null;
 
