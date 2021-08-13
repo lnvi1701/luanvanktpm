@@ -150,3 +150,16 @@ export const addItemType = (payload) => {
       });
   });
 };
+
+export const updateItemType = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("items-type/update", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

@@ -14,9 +14,10 @@ import React, { useEffect, useState } from "react";
 import { getItemsType } from "../../../api/stock-manager";
 import "./ItemsTypeManager.scss";
 import DialogAddNewItemType from "./components/DialogAddNewItemType";
+import DialogEditItemType from "./components/DialogEditItemType";
 
-function createData(id, name, category, unit, description) {
-  return { id, name, category, unit, description };
+function createData(id, name, category, unit, description, category_id) {
+  return { id, name, category, unit, description, category_id };
 }
 
 const useStyles = makeStyles({
@@ -59,12 +60,18 @@ function ItemsTypeManager(props) {
 
   const getData = async (sortProperty, sortOrder) => {
     const data = await getItemsType(sortProperty, sortOrder);
+    console.log(data);
     setList(data);
   };
 
-  const handleUpdateDataSuccess = () => {
+  const handleAddNewSuccess = () => {
     getData(sortProperty, sortOrder);
-    handleClose();
+    setOpenAddNewItem(false);
+  };
+
+  const handleEditSuccess = () => {
+    getData(sortProperty, sortOrder);
+    setOpenEditItem(false);
   };
 
   const handleDeleteItem = (item) => {
@@ -78,7 +85,14 @@ function ItemsTypeManager(props) {
 
   const rows = [
     ...list.map((item) =>
-      createData(item.id, item.name, item.category, item.unit, item.description)
+      createData(
+        item.id,
+        item.name,
+        item.category,
+        item.unit,
+        item.description,
+        item.category_id
+      )
     ),
   ];
 
@@ -125,8 +139,16 @@ function ItemsTypeManager(props) {
     <DialogAddNewItemType
       open={openAddNewItem}
       handleClose={() => setOpenAddNewItem(false)}
+      onAddNewSuccess={handleAddNewSuccess}
+    />
+  ) : null;
+
+  const dialogEditItemType = openEditItem ? (
+    <DialogEditItemType
+      open={openEditItem}
       selectedItem={selectedItem}
-      onUpdateSuccess={handleUpdateDataSuccess}
+      handleClose={handleClose}
+      onEditSuccess={handleEditSuccess}
     />
   ) : null;
 
@@ -165,6 +187,7 @@ function ItemsTypeManager(props) {
         </Table>
       </TableContainer>
       {dialogAddNewItemType}
+      {dialogEditItemType}
     </div>
   );
 }

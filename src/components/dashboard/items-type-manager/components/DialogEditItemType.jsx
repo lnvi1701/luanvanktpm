@@ -7,20 +7,21 @@ import Select from "@material-ui/core/Select";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
-import { addItemType } from "../../../../api/stock-manager";
+import { updateItemType } from "../../../../api/stock-manager";
 import { getListCategories } from "../../../../meta-data/categories";
 import "./DialogEditItemType.scss";
 
 export default function DialogAddNewItemType({
   open,
   handleClose,
-  onAddNewSuccess,
+  selectedItem,
+  onEditSuccess,
 }) {
   // modal value
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("1");
-  const [unit, setUnit] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState(selectedItem.name);
+  const [category, setCategory] = useState(selectedItem.category_id);
+  const [unit, setUnit] = useState(selectedItem.unit);
+  const [description, setDescription] = useState(selectedItem.descriptions);
 
   // list options
   const [categories, setCategories] = useState([]);
@@ -63,16 +64,19 @@ export default function DialogAddNewItemType({
 
   const handleSubmitForm = () => {
     const payload = {
+      id: selectedItem.id,
       name,
       category,
       unit,
       description,
     };
 
-    addItemType(payload)
+    console.log(payload);
+
+    updateItemType(payload)
       .then((res) => {
         console.log(res);
-        onAddNewSuccess();
+        onEditSuccess();
       })
       .catch((err) => {
         console.log(err);
