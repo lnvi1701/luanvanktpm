@@ -270,4 +270,60 @@ stockDB.deleteItemType = ({ id }) => {
   });
 };
 
+stockDB.updateCategory = ({ id, name, description }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE categories
+              SET name = ?, description = ?
+              WHERE id = ?`,
+      [name, description, id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.addCategory = ({ name, description }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO categories (name, description) 
+        VALUES (?, ?)`,
+      [name, description],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "add success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.deleteCategory = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`DELETE FROM categories WHERE id = ?`, [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve({
+        success: {
+          message: "delete success",
+        },
+      });
+    });
+  });
+};
+
 module.exports = stockDB;
