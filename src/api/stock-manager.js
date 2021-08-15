@@ -189,3 +189,29 @@ export const addCategory = (payload) => {
       });
   });
 };
+
+export const updateCategory = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("categories/update", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const deleteCategory = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("categories/delete", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

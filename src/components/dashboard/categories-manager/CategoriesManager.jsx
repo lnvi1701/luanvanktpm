@@ -1,3 +1,4 @@
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -12,7 +13,8 @@ import React, { useEffect, useState } from "react";
 import { getCategories } from "../../../api/stock-manager";
 import "./CategoriesManager.scss";
 import DialogAddNewCategory from "./components/DialogAddNewCategory";
-import Button from "@material-ui/core/Button";
+import DialogEditCategory from "./components/DialogEditCategory";
+import DialogRemoveCategory from "./components/DialogRemoveCategory";
 
 function createData(id, name, description) {
   return { id, name, description };
@@ -27,12 +29,11 @@ const useStyles = makeStyles({
 function CategoriesManager(props) {
   const [list, setList] = useState([]);
   const classes = useStyles();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const [openEditItem, setOpenEditItem] = useState(false);
   const [openAddNewCategory, setOpenAddNewCategory] = useState(false);
   const [openAlertRemove, setOpenAlertRemove] = useState(false);
-  const [sortProperty, setSortProperty] = useState("id");
-  const [sortOrder, setSortOrder] = useState("ASC");
 
   const getData = async () => {
     const data = await getCategories();
@@ -51,6 +52,21 @@ function CategoriesManager(props) {
     getData();
   };
 
+  const handleClickOpen = (category) => {
+    setOpenEditItem(true);
+    setSelectedItem(category);
+  };
+
+  const handleDeleteItem = (category) => {
+    setSelectedItem(category);
+    setOpenAlertRemove(true);
+  };
+
+  const handleClose = () => {
+    setOpenEditItem(false);
+    setSelectedItem(null);
+  };
+
   const dialogAddNewCategory = openAddNewCategory ? (
     <DialogAddNewCategory
       open={openAddNewCategory}
@@ -59,12 +75,32 @@ function CategoriesManager(props) {
     />
   ) : null;
 
-  const actionsBlock = (
-    <div className="actionsBlock">
-      <EditIcon />
-      <DeleteIcon />
-    </div>
-  );
+  const dialogEditCategory = openEditItem ? (
+    <DialogEditCategory
+      open={openEditItem}
+      handleClose={handleClose}
+      selectedItem={selectedItem}
+      onUpdateSuccess={handleAddNewSuccess}
+    />
+  ) : null;
+
+  const dialogAlertRemove = openAlertRemove ? (
+    <DialogRemoveCategory
+      open={openAlertRemove}
+      handleClose={() => setOpenAlertRemove(false)}
+      selectedItem={selectedItem}
+      onSuccess={() => getData()}
+    />
+  ) : null;
+
+  const actionsBlock = (item) => {
+    return (
+      <div className="actionsBlock">
+        <EditIcon onClick={() => handleClickOpen(item)} />
+        <DeleteIcon onClick={() => handleDeleteItem(item)} />
+      </div>
+    );
+  };
 
   return (
     <div className="categoriesManager">
@@ -89,13 +125,15 @@ function CategoriesManager(props) {
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.description}</TableCell>
-                <TableCell>{actionsBlock}</TableCell>
+                <TableCell>{actionsBlock(row)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       {dialogAddNewCategory}
+      {dialogEditCategory}
+      {dialogAlertRemove}
     </div>
   );
 }
