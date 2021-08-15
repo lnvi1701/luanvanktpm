@@ -3,40 +3,24 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Select from "@material-ui/core/Select";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
-import React, { useEffect, useState } from "react";
-import { addItemType } from "../../../../api/stock-manager";
-import { getListCategories } from "../../../../meta-data/categories";
-import "./DialogEditItemType.scss";
+import React, { useState } from "react";
+import { addCategory } from "../../../../api/stock-manager";
+import "./DialogAddNewCategory.scss";
 
-export default function DialogAddNewItemType({
+export default function DialogAddNewCategory({
   open,
   handleClose,
   onAddNewSuccess,
 }) {
   // modal value
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("1");
-  const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
-
-  // list options
-  const [categories, setCategories] = useState([]);
 
   // error state
 
   const [nameErr, setNameErr] = useState(null);
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const categories = await getListCategories();
-      setCategories(categories);
-    };
-
-    getCategories();
-  }, []);
 
   const handleNameChange = (event) => {
     const { value } = event.target;
@@ -51,25 +35,13 @@ export default function DialogAddNewItemType({
     setNameErr(null);
   };
 
-  const handleCategoryChange = (event) => {
-    const { value } = event.target;
-    setCategory(value);
-  };
-
-  const handleUnitChange = (event) => {
-    const { value } = event.target;
-    setUnit(value);
-  };
-
   const handleSubmitForm = () => {
     const payload = {
       name,
-      category,
-      unit,
       description,
     };
 
-    addItemType(payload)
+    addCategory(payload)
       .then((res) => {
         console.log(res);
         onAddNewSuccess();
@@ -88,36 +60,17 @@ export default function DialogAddNewItemType({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm loại thiết bị</DialogTitle>
+        <DialogTitle id="form-dialog-title">Thêm danh mục</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <TextField
               fullWidth
-              label="Tên thiết bị"
+              label="Tên danh mục"
               value={name}
               onChange={handleNameChange}
               onBlur={handleCheckValidateName}
               error={nameErr}
               helperText={nameErr}
-            />
-            <Select
-              native
-              fullWidth
-              label="Danh mục"
-              value={category}
-              onChange={handleCategoryChange}
-            >
-              {categories.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
-            <TextField
-              fullWidth
-              label="Đơn vị"
-              value={unit}
-              onChange={handleUnitChange}
             />
             <TextareaAutosize
               value={description}

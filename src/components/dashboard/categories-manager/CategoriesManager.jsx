@@ -11,6 +11,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import React, { useEffect, useState } from "react";
 import { getCategories } from "../../../api/stock-manager";
 import "./CategoriesManager.scss";
+import DialogAddNewCategory from "./components/DialogAddNewCategory";
+import Button from "@material-ui/core/Button";
 
 function createData(id, name, description) {
   return { id, name, description };
@@ -26,17 +28,36 @@ function CategoriesManager(props) {
   const [list, setList] = useState([]);
   const classes = useStyles();
 
+  const [openEditItem, setOpenEditItem] = useState(false);
+  const [openAddNewCategory, setOpenAddNewCategory] = useState(false);
+  const [openAlertRemove, setOpenAlertRemove] = useState(false);
+  const [sortProperty, setSortProperty] = useState("id");
+  const [sortOrder, setSortOrder] = useState("ASC");
+
+  const getData = async () => {
+    const data = await getCategories();
+    setList(data);
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      const data = await getCategories();
-      setList(data);
-    };
     getData();
   }, []);
 
   const rows = [
     ...list.map((item) => createData(item.id, item.name, item.description)),
   ];
+
+  const handleAddNewSuccess = () => {
+    getData();
+  };
+
+  const dialogAddNewCategory = openAddNewCategory ? (
+    <DialogAddNewCategory
+      open={openAddNewCategory}
+      handleClose={() => setOpenAddNewCategory(false)}
+      onAddNewSuccess={handleAddNewSuccess}
+    />
+  ) : null;
 
   const actionsBlock = (
     <div className="actionsBlock">
@@ -47,6 +68,9 @@ function CategoriesManager(props) {
 
   return (
     <div className="categoriesManager">
+      <Button color="primary" onClick={() => setOpenAddNewCategory(true)}>
+        Thêm danh mục thiết bị
+      </Button>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -71,6 +95,7 @@ function CategoriesManager(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      {dialogAddNewCategory}
     </div>
   );
 }

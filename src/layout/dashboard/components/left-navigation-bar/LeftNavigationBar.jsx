@@ -3,17 +3,17 @@ import "./leftNavigationBar.scss";
 
 const NAV_ITEM = [
   {
-    name: "Quản lý danh sách vật tư",
+    name: "Quản lý danh sách thiết bị",
     component: "ItemsManager",
     accessRights: ["user", "admin"],
   },
   {
-    name: "Quản lý loại vật tư",
+    name: "Quản lý loại thiết bị",
     component: "ItemsTypeManager",
     accessRights: ["user", "admin"],
   },
   {
-    name: "Quản lý danh mục vật tư",
+    name: "Quản lý danh mục thiết bị",
     component: "CategoriesManager",
     accessRights: ["user", "admin"],
   },

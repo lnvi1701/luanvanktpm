@@ -165,7 +165,7 @@ function ItemsManager(props) {
   return (
     <div className="itemsManager">
       <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
-        Thêm vật tư
+        Thêm thiết bị
       </Button>
       {selectSort}
       <TableContainer component={Paper}>

@@ -176,3 +176,16 @@ export const deleteItemType = (payload) => {
       });
   });
 };
+
+export const addCategory = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("categories/add", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

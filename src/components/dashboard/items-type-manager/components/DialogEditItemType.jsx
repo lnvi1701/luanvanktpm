@@ -92,12 +92,12 @@ export default function DialogAddNewItemType({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm loại vật tư</DialogTitle>
+        <DialogTitle id="form-dialog-title">Thêm loại thiết bị</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <TextField
               fullWidth
-              label="Tên vật tư"
+              label="Tên thiết bị"
               value={name}
               onChange={handleNameChange}
               onBlur={handleCheckValidateName}
