@@ -6,11 +6,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import BlockIcon from "@material-ui/icons/Block";
 import React, { useEffect, useState } from "react";
 import { getUsers } from "../../../api/stock-manager";
 import "./UsersManager.scss";
+import DialogAddNewUser from "./components/DialogAddNewUser";
 
 function createData(
   id,
@@ -19,7 +22,8 @@ function createData(
   full_name,
   email,
   permission,
-  permission_id
+  permission_id,
+  status
 ) {
   return {
     id,
@@ -29,6 +33,7 @@ function createData(
     email,
     permission,
     permission_id,
+    status,
   };
 }
 
@@ -42,13 +47,20 @@ function UsersManager(props) {
   const [list, setList] = useState([]);
   const classes = useStyles();
 
+  const [openAddNewUser, setOpenAddNewUser] = useState(false);
+
+  const getData = async () => {
+    const data = await getUsers();
+    setList(data);
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      const data = await getUsers();
-      setList(data);
-    };
     getData();
   }, []);
+
+  const handleUpdateData = () => {
+    getData();
+  };
 
   const rows = [
     ...list.map((item) =>
@@ -59,7 +71,8 @@ function UsersManager(props) {
         item.full_name,
         item.email,
         item.permission,
-        item.permission_id
+        item.permission_id,
+        item.status
       )
     ),
   ];
@@ -67,12 +80,24 @@ function UsersManager(props) {
   const actionsBlock = (
     <div className="actionsBlock">
       <EditIcon />
+      <BlockIcon />
       <DeleteIcon />
     </div>
   );
 
+  const dialogAddNewUser = openAddNewUser ? (
+    <DialogAddNewUser
+      open={openAddNewUser}
+      handleClose={() => setOpenAddNewUser(false)}
+      onAddNewSuccess={handleUpdateData}
+    />
+  ) : null;
+
   return (
     <div className="usersManager">
+      <Button color="primary" onClick={() => setOpenAddNewUser(true)}>
+        Thêm tài khoản nhân viên
+      </Button>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -81,6 +106,7 @@ function UsersManager(props) {
               <TableCell>Họ và tên</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Chức năng</TableCell>
+              <TableCell>Trạng thái</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -93,12 +119,16 @@ function UsersManager(props) {
                 <TableCell>{row.full_name}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.permission}</TableCell>
+                <TableCell>
+                  {row.status === "active" ? "Hoạt động" : "Bị Khoá"}
+                </TableCell>
                 <TableCell>{actionsBlock}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {dialogAddNewUser}
     </div>
   );
 }

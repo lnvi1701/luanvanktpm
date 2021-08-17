@@ -215,3 +215,55 @@ export const deleteCategory = (payload) => {
       });
   });
 };
+
+export const addUser = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("users/add", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const updateUser = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("users/update", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const deleteUser = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .post("users/delete", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getPermissions = (payload) => {
+  return new Promise((resolve, reject) => {
+    xebusInstance
+      .get("permissions")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
