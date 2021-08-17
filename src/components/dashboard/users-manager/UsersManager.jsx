@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { getUsers } from "../../../api/stock-manager";
 import "./UsersManager.scss";
 import DialogAddNewUser from "./components/DialogAddNewUser";
+import DialogAlertRemoveUser from "./components/DialogAlertRemoveUser";
 
 function createData(
   id,
@@ -47,7 +48,10 @@ function UsersManager(props) {
   const [list, setList] = useState([]);
   const classes = useStyles();
 
+  const [selectedUser, setSelectedUser] = useState();
+
   const [openAddNewUser, setOpenAddNewUser] = useState(false);
+  const [openAlertRemove, setOpenAlertRemove] = useState(false);
 
   const getData = async () => {
     const data = await getUsers();
@@ -77,19 +81,35 @@ function UsersManager(props) {
     ),
   ];
 
-  const actionsBlock = (
-    <div className="actionsBlock">
-      <EditIcon />
-      <BlockIcon />
-      <DeleteIcon />
-    </div>
-  );
+  const handleDeleteItem = (item) => {
+    setSelectedUser(item);
+    setOpenAlertRemove(true);
+  };
+
+  const actionsBlock = (item) => {
+    return (
+      <div className="actionsBlock">
+        {/* <EditIcon onClick={() => handleClickOpen(item)} /> */}
+        <BlockIcon />
+        <DeleteIcon onClick={() => handleDeleteItem(item)} />
+      </div>
+    );
+  };
 
   const dialogAddNewUser = openAddNewUser ? (
     <DialogAddNewUser
       open={openAddNewUser}
       handleClose={() => setOpenAddNewUser(false)}
       onAddNewSuccess={handleUpdateData}
+    />
+  ) : null;
+
+  const dialogAlertRemove = openAlertRemove ? (
+    <DialogAlertRemoveUser
+      open={openAlertRemove}
+      handleClose={() => setOpenAlertRemove(false)}
+      selectedItem={selectedUser}
+      onSuccess={() => getData()}
     />
   ) : null;
 
@@ -122,13 +142,14 @@ function UsersManager(props) {
                 <TableCell>
                   {row.status === "active" ? "Hoạt động" : "Bị Khoá"}
                 </TableCell>
-                <TableCell>{actionsBlock}</TableCell>
+                <TableCell>{actionsBlock(row)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       {dialogAddNewUser}
+      {dialogAlertRemove}
     </div>
   );
 }
