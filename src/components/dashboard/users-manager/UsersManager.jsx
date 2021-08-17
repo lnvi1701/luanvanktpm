@@ -15,6 +15,7 @@ import { getUsers } from "../../../api/stock-manager";
 import "./UsersManager.scss";
 import DialogAddNewUser from "./components/DialogAddNewUser";
 import DialogAlertRemoveUser from "./components/DialogAlertRemoveUser";
+import DialogEditUser from "./components/DialogEditUser";
 
 function createData(
   id,
@@ -52,6 +53,7 @@ function UsersManager(props) {
 
   const [openAddNewUser, setOpenAddNewUser] = useState(false);
   const [openAlertRemove, setOpenAlertRemove] = useState(false);
+  const [openEditUser, setOpenEditUser] = useState(false);
 
   const getData = async () => {
     const data = await getUsers();
@@ -64,6 +66,11 @@ function UsersManager(props) {
 
   const handleUpdateData = () => {
     getData();
+  };
+
+  const handleClose = () => {
+    setSelectedUser(null);
+    setOpenEditUser(false);
   };
 
   const rows = [
@@ -86,10 +93,15 @@ function UsersManager(props) {
     setOpenAlertRemove(true);
   };
 
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setOpenEditUser(true);
+  };
+
   const actionsBlock = (item) => {
     return (
       <div className="actionsBlock">
-        {/* <EditIcon onClick={() => handleClickOpen(item)} /> */}
+        <EditIcon onClick={() => handleEditUser(item)} />
         <BlockIcon />
         <DeleteIcon onClick={() => handleDeleteItem(item)} />
       </div>
@@ -110,6 +122,15 @@ function UsersManager(props) {
       handleClose={() => setOpenAlertRemove(false)}
       selectedItem={selectedUser}
       onSuccess={() => getData()}
+    />
+  ) : null;
+
+  const dialogEditUser = openEditUser ? (
+    <DialogEditUser
+      open={openEditUser}
+      selectedUser={selectedUser}
+      handleClose={handleClose}
+      onEditSuccess={handleUpdateData}
     />
   ) : null;
 
@@ -150,6 +171,7 @@ function UsersManager(props) {
       </TableContainer>
       {dialogAddNewUser}
       {dialogAlertRemove}
+      {dialogEditUser}
     </div>
   );
 }
