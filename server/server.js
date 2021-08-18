@@ -6,6 +6,7 @@ const users = require("./routers/users");
 const items = require("./routers/items");
 const statuses = require("./routers/statuses");
 const stocks = require("./routers/stocks");
+const permissions = require("./routers/permissions");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/categories", categories);
 app.use("/users", users);
 app.use("/statuses", statuses);
 app.use("/stocks", stocks);
+app.use("/permissions", permissions);
 
 const port = process.env.PORT || 5000;
 

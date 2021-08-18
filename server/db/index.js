@@ -99,7 +99,7 @@ stockDB.getAllUsers = () => {
     pool.query(
       `SELECT u.id, first_name, last_name, CONCAT(first_name," ",last_name) AS full_name,
               email, p.name AS permission,
-              p.id AS permission_id
+              p.id AS permission_id,u.status
         FROM users u
         LEFT JOIN permissions p
             ON u.permission = p.id`,
@@ -322,6 +322,87 @@ stockDB.deleteCategory = ({ id }) => {
           message: "delete success",
         },
       });
+    });
+  });
+};
+
+stockDB.addUser = ({
+  email,
+  password,
+  first_name,
+  last_name,
+  permission,
+  status,
+}) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO users (email, password, first_name, last_name, permission, status) 
+        VALUES (?, ?, ?, ?, ?, ?)`,
+      [email, password, first_name, last_name, permission, status],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "add success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.updateUser = ({
+  id,
+  email,
+  first_name,
+  last_name,
+  permission,
+  status,
+}) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE users
+              SET email = ?, first_name = ?, last_name = ?, permission = ?, status = ?
+              WHERE id = ?`,
+      [email, first_name, last_name, permission, status, id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
+stockDB.deleteUser = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`DELETE FROM users WHERE id = ?`, [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve({
+        success: {
+          message: "delete success",
+        },
+      });
+    });
+  });
+};
+
+stockDB.getAllPermissions = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM permissions`, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
     });
   });
 };
