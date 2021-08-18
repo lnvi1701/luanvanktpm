@@ -1,3 +1,4 @@
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -6,16 +7,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import BlockIcon from "@material-ui/icons/Block";
 import React, { useEffect, useState } from "react";
 import { getUsers } from "../../../api/stock-manager";
-import "./UsersManager.scss";
 import DialogAddNewUser from "./components/DialogAddNewUser";
 import DialogAlertRemoveUser from "./components/DialogAlertRemoveUser";
 import DialogEditUser from "./components/DialogEditUser";
+import "./UsersManager.scss";
 
 function createData(
   id,
@@ -69,8 +68,8 @@ function UsersManager(props) {
   };
 
   const handleClose = () => {
-    setSelectedUser(null);
     setOpenEditUser(false);
+    setSelectedUser(null);
   };
 
   const rows = [
@@ -102,7 +101,6 @@ function UsersManager(props) {
     return (
       <div className="actionsBlock">
         <EditIcon onClick={() => handleEditUser(item)} />
-        <BlockIcon />
         <DeleteIcon onClick={() => handleDeleteItem(item)} />
       </div>
     );

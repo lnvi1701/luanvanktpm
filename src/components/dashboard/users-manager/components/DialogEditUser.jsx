@@ -6,7 +6,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
-import { addUser } from "../../../../api/stock-manager";
+import { updateUser } from "../../../../api/stock-manager";
 import { listPermissions } from "../../../../meta-data/permissions";
 import TextError from "../../../common/text-error/TextError";
 
@@ -18,12 +18,11 @@ const STATUS_OPTIONS = [
 export default function DialogEditUser({
   open,
   handleClose,
-  onAddNewSuccess,
   selectedUser,
+  onEditSuccess,
 }) {
   // modal value
   const [email, setEmail] = useState(selectedUser.email);
-  const [password, setPassword] = useState(selectedUser.password);
   const [firstName, setFirstName] = useState(selectedUser.first_name);
   const [lastName, setLastName] = useState(selectedUser.last_name);
   const [permission, setPermission] = useState(selectedUser.permission_id);
@@ -34,7 +33,6 @@ export default function DialogEditUser({
 
   // error state
   const [emailErr, setEmailErr] = useState(null);
-  const [passwordErr, setPasswordErr] = useState(null);
   const [firstNameErr, setFirstNameErr] = useState(null);
   const [lastNameErr, setLastNameErr] = useState(null);
 
@@ -62,17 +60,6 @@ export default function DialogEditUser({
     setEmailErr(null);
   };
 
-  const handleCheckValidatePassword = () => {
-    if (!password) {
-      return setPasswordErr("Mật khẩu không hợp lệ");
-    }
-
-    if (password.length < 6)
-      return setPasswordErr("Mật khẩu phải nhiều hơn 6 ký tự");
-
-    setPasswordErr(null);
-  };
-
   const handleCheckValidateFirstName = () => {
     if (!firstName) {
       return setFirstNameErr("Không được bỏ trống họ");
@@ -89,19 +76,18 @@ export default function DialogEditUser({
 
   const handleSubmitForm = () => {
     const payload = {
+      id: selectedUser.id,
       email,
-      password,
       first_name: firstName,
       last_name: lastName,
       permission,
       status,
     };
 
-    addUser(payload)
+    updateUser(payload)
       .then((res) => {
         if (res.error) return setServerError(res.message);
-
-        onAddNewSuccess();
+        onEditSuccess();
         handleClose();
       })
       .catch((err) => {
@@ -116,7 +102,7 @@ export default function DialogEditUser({
   const disabledSubmitForm = () => {
     let isDisabled = false;
 
-    const errArr = [emailErr, passwordErr, firstNameErr, lastNameErr];
+    const errArr = [emailErr, firstNameErr, lastNameErr];
 
     errArr.forEach((err) => {
       if (err !== null) {
@@ -137,7 +123,7 @@ export default function DialogEditUser({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm danh mục</DialogTitle>
+        <DialogTitle id="form-dialog-title">Sửa thông tin</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <TextField
@@ -148,16 +134,6 @@ export default function DialogEditUser({
               helperText={emailErr}
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleCheckValidateEmail}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              value={password}
-              type="password"
-              error={passwordErr}
-              helperText={passwordErr}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={handleCheckValidatePassword}
             />
             <TextField
               fullWidth
