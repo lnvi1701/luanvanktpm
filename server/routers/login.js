@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, isAdmin } = req.body;
 
     if (!email || !password) {
       res.json({ error: ERROR.invalid });
@@ -18,14 +18,16 @@ router.post("/", async (req, res, next) => {
       password,
     };
 
-    let results = await dbLogin.adminLogin(payload);
+    let results = isAdmin
+      ? await dbLogin.adminLogin(payload)
+      : await dbLogin.userLogin(payload);
 
     if (!results.length) {
       res.json({ error: ERROR.incorect });
       return;
     }
 
-    res.json(results[0]);
+    res.json({ ...results[0], isAdmin });
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

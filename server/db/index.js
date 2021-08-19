@@ -26,6 +26,21 @@ stockDB.adminLogin = ({ email, password }) => {
   });
 };
 
+stockDB.userLogin = ({ email, password }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT * FROM users WHERE email = ? AND password = ?`,
+      [email, password],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 stockDB.getAllItems = (orderby, sort_order) => {
   return new Promise((resolve, reject) => {
     pool.query(
