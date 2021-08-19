@@ -1,5 +1,6 @@
 import React from "react";
 import "./leftNavigationBar.scss";
+import { connect } from "react-redux";
 
 const NAV_ITEM = [
   {
@@ -25,7 +26,7 @@ const NAV_ITEM = [
   {
     name: "Yêu cầu duyệt",
     component: "RequestsBrowsingManager",
-    accessRights: ["admin"],
+    accessRights: ["user", "admin"],
   },
 ];
 
@@ -35,7 +36,7 @@ function LeftNavigationBar(props) {
   };
 
   const listNav = NAV_ITEM.map((item, index) => {
-    return (
+    return item.accessRights[0] === "admin" && !props.user.isAdmin ? null : (
       <div
         className={classNames(item)}
         key={index}
@@ -53,4 +54,10 @@ function LeftNavigationBar(props) {
   );
 }
 
-export default LeftNavigationBar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(LeftNavigationBar);

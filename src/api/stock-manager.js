@@ -8,10 +8,10 @@ const xebusInstance = axios.create({
   timeout: DEFAULT_TIMEOUT,
 });
 
-export const adminLogin = (email, password) => {
+export const adminLogin = (email, password, isAdmin) => {
   return new Promise((resolve, reject) => {
     xebusInstance
-      .post("admin/login", { email, password })
+      .post("admin/login", { email, password, isAdmin })
       .then((response) => {
         resolve(response.data);
       })
