@@ -69,13 +69,98 @@ stockDB.getAllItems = (orderby, sort_order) => {
   });
 };
 
+stockDB.getItem = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT i.id, it.name, input_time, output_time, expiry_time, i.description,
+            it.id AS type_id,
+            s.name AS status, s.id AS status_id,
+            st.name AS stock, st.id AS stock_id,
+            stp.name AS stock_type, stp.id AS stock_type_id
+      FROM items i
+      LEFT JOIN item_types it
+        ON i.type = it.id
+      LEFT JOIN statuses s
+        ON i.status = s.id
+      LEFT JOIN stocks st
+        ON i.stock_id = st.id
+      LEFT JOIN stock_types stp
+        ON st.type = stp.id
+      WHERE i.id = ?`,
+      [id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
+stockDB.getItemByTypeId = (type_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT i.id, it.name, input_time, output_time, expiry_time, i.description,
+            it.id AS type_id,
+            s.name AS status, s.id AS status_id,
+            st.name AS stock, st.id AS stock_id,
+            stp.name AS stock_type, stp.id AS stock_type_id
+      FROM items i
+      LEFT JOIN item_types it
+        ON i.type = it.id
+      LEFT JOIN statuses s
+        ON i.status = s.id
+      LEFT JOIN stocks st
+        ON i.stock_id = st.id
+      LEFT JOIN stock_types stp
+        ON st.type = stp.id
+      WHERE i.type = ?`,
+      [type_id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 stockDB.getAllItemsType = (sort_property, sort_order) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT it.id,it.name, c.name AS category,c.id AS category_id,unit,it.description
+      `SELECT it.id, it.name, c.name AS category,c.id AS category_id,unit,it.description
         FROM item_types it 
 		    LEFT JOIN categories c 
 			    ON it.category = c.id
+        ORDER BY ${sort_property || ""} ${sort_order}`,
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
+stockDB.getAllStaffRequest = (sort_property, sort_order) => {
+  console.log(sort_property, sort_order);
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT 
+          sr.id, CONCAT(u.first_name," ",u.last_name) AS full_name, sr.staff_id,
+          sr.date_time, sr.detail, sr.current_status AS current_status_id,
+          sr.updated_status AS updated_status_id, sr.update_address, sr.status,
+          sr.item_id, it.name, sr.current_stock, sr.updated_stock
+        FROM staff_requests sr
+        LEFT JOIN users u
+          ON sr.staff_id = u.id
+        LEFT JOIN items i
+          ON sr.item_id = i.id
+        LEFT JOIN item_types it
+          ON i.type = it.id
         ORDER BY ${sort_property || ""} ${sort_order}`,
       (err, result) => {
         if (err) {
@@ -207,6 +292,47 @@ stockDB.addItem = ({
         return resolve({
           success: {
             message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
+// addStaffRequest
+stockDB.addStaffRequest = ({
+  staff_id,
+  date_time,
+  item_id,
+  detail,
+  current_status,
+  updated_status,
+  updated_address,
+  current_stock,
+  updated_stock,
+}) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO staff_requests (staff_id, date_time, item_id, detail, current_status, updated_status, update_address, current_stock, updated_stock) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        staff_id,
+        date_time,
+        item_id,
+        detail,
+        current_status,
+        updated_status,
+        updated_address,
+        current_stock,
+        updated_stock,
+      ],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "add success",
           },
         });
       }

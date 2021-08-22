@@ -15,6 +15,28 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let results = await dbLogin.getItem(id);
+    res.json(results[0]);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+router.get("/type/:type_id", async (req, res, next) => {
+  try {
+    const { type_id } = req.params;
+    let results = await dbLogin.getItemByTypeId(type_id);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
 router.post("/update", async (req, res, next) => {
   try {
     const payload = req.body;
