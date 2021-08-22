@@ -35,17 +35,20 @@ function LeftNavigationBar(props) {
     return `item ${item.component === props.activeComponent ? "active" : ""}`;
   };
 
-  const listNav = NAV_ITEM.map((item, index) => {
-    return item.accessRights[0] === "admin" && !props.user.isAdmin ? null : (
-      <div
-        className={classNames(item)}
-        key={index}
-        onClick={() => props.onItemClick(item)}
-      >
-        {item.name}
-      </div>
-    );
-  });
+  const listNav = !props.user
+    ? null
+    : NAV_ITEM.map((item, index) => {
+        return item.accessRights[0] === "admin" &&
+          !props.user.isAdmin ? null : (
+          <div
+            className={classNames(item)}
+            key={index}
+            onClick={() => props.onItemClick(item)}
+          >
+            {item.name}
+          </div>
+        );
+      });
 
   return (
     <div className="leftNavigationBar">
