@@ -18,13 +18,10 @@ import { stocks } from "../../../../meta-data/stocks";
 import "./DialogEditItem.scss";
 import { format } from "date-fns";
 import { updateItem } from "../../../../api/stock-manager";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
-export default function DialogEditItem({
-  open,
-  handleClose,
-  selectedItem,
-  onUpdateSuccess,
-}) {
+function DialogEditItem({ open, handleClose, selectedItem, onUpdateSuccess }) {
   // modal value
   const [typeId, setTypeId] = useState(selectedItem.type_id);
   const [statusId, setStatusId] = useState(selectedItem.status_id);
@@ -50,6 +47,7 @@ export default function DialogEditItem({
   useEffect(() => {
     const getStatuses = async () => {
       const listStt = await statuses();
+      console.log(listStt);
       setStatusOptions(listStt);
     };
     const getStocks = async () => {
@@ -116,45 +114,45 @@ export default function DialogEditItem({
         </DialogTitle>
         <DialogContent>
           <form className="formEditItem">
-            <Select
-              native
-              fullWidth
-              label="Name"
-              value={typeId}
-              onChange={handleTypeIdChange}
-            >
-              {itemTypes.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
-            <Select
-              native
-              fullWidth
-              label="Status"
-              value={statusId}
-              onChange={handleStatusChange}
-            >
-              {statusOptions.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
-            <Select
-              native
-              fullWidth
-              label="Stock"
-              value={stockId}
-              onChange={handleStockChange}
-            >
-              {stockOptions.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
+            <FormControl fullWidth>
+              <InputLabel>Tên</InputLabel>
+              <Select fullWidth value={typeId} onChange={handleTypeIdChange}>
+                {itemTypes.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>Trạng thái</InputLabel>
+              <Select
+                fullWidth
+                label="Status"
+                value={statusId}
+                onChange={handleStatusChange}
+              >
+                {statusOptions.map((item) => (
+                  <option
+                    key={item.value}
+                    value={item.value}
+                    disabled={item.permission === "admin"}
+                  >
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>Kho</InputLabel>
+              <Select fullWidth value={stockId} onChange={handleStockChange}>
+                {stockOptions.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container justifyContent="space-between">
                 <KeyboardDatePicker
@@ -218,3 +216,5 @@ export default function DialogEditItem({
     </div>
   );
 }
+
+export default DialogEditItem;

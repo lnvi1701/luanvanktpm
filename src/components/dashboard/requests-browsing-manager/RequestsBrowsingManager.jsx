@@ -16,6 +16,9 @@ import { statuses } from "../../../meta-data/statuses";
 import { stocks } from "../../../meta-data/stocks";
 import DialogCreateRequest from "./components/DialogCreateRequest";
 import DialogEditRequest from "./components/DialogEditRequest";
+import { REQUEST_STATUS_STATE } from "../../../meta-data/request-statuses";
+import { connect } from "react-redux";
+import Chip from "@material-ui/core/Chip";
 
 function createData(
   current_status_id,
@@ -55,12 +58,7 @@ const useStyles = makeStyles({
   },
 });
 
-const STATUS_STATE = {
-  waiting: "Đang chờ duyệt",
-  approved: "Đã duyệt",
-};
-
-function UsersManager(props) {
+function RequestsBrowsingManager(props) {
   const [list, setList] = useState([]);
   const classes = useStyles();
 
@@ -133,11 +131,15 @@ function UsersManager(props) {
     ),
   ];
 
+  const renderDeleteIcon = props.user.isAdmin ? (
+    <DeleteIcon onClick={() => {}} />
+  ) : null;
+
   const actionsBlock = (item) => {
     return (
       <div className="actionsBlock">
         <DescriptionIcon onClick={() => handleDescriptionClick(item)} />
-        <DeleteIcon onClick={() => {}} />
+        {renderDeleteIcon}
       </div>
     );
   };
@@ -160,7 +162,7 @@ function UsersManager(props) {
   ) : null;
 
   return (
-    <div className="usersManager">
+    <div>
       <Button color="primary" onClick={() => setOpenCreateRequest(true)}>
         Tạo yêu cầu duyệt
       </Button>
@@ -171,9 +173,9 @@ function UsersManager(props) {
               <TableCell>Mã </TableCell>
               <TableCell>Tên thiết bị (Mã)</TableCell>
               <TableCell>Trạng thái hiện tại</TableCell>
-              <TableCell>Trạng thái sau khi duyệt</TableCell>
-              <TableCell>Nhân viên tạo báo cáo</TableCell>
               <TableCell>Kho hiện tại</TableCell>
+              <TableCell>Nhân viên tạo báo cáo</TableCell>
+              <TableCell>Trạng thái sau khi duyệt</TableCell>
               <TableCell>Kho sau khi duyệt</TableCell>
               <TableCell>Trạng thái báo cáo</TableCell>
               <TableCell>Actions</TableCell>
@@ -187,13 +189,7 @@ function UsersManager(props) {
                 </TableCell>
                 <TableCell>{`${row.name} [${row.item_id}]`} </TableCell>
                 <TableCell>
-                  <Select
-                    disabled
-                    native
-                    fullWidth
-                    label="Status"
-                    value={row.current_status_id}
-                  >
+                  <Select disabled fullWidth value={row.current_status_id}>
                     {statusOptions.map((item) => (
                       <option key={item.value} value={item.value}>
                         {item.label}
@@ -202,14 +198,8 @@ function UsersManager(props) {
                   </Select>
                 </TableCell>
                 <TableCell>
-                  <Select
-                    disabled
-                    native
-                    fullWidth
-                    label="Status"
-                    value={row.updated_status_id}
-                  >
-                    {statusOptions.map((item) => (
+                  <Select disabled fullWidth value={row.current_stock}>
+                    {stockOptions.map((item) => (
                       <option key={item.value} value={item.value}>
                         {item.label}
                       </option>
@@ -218,8 +208,8 @@ function UsersManager(props) {
                 </TableCell>
                 <TableCell>{row.full_name}</TableCell>
                 <TableCell>
-                  <Select disabled fullWidth value={row.current_stock}>
-                    {stockOptions.map((item) => (
+                  <Select disabled fullWidth value={row.updated_status_id}>
+                    {statusOptions.map((item) => (
                       <option key={item.value} value={item.value}>
                         {item.label}
                       </option>
@@ -235,7 +225,18 @@ function UsersManager(props) {
                     ))}
                   </Select>
                 </TableCell>
-                <TableCell>{STATUS_STATE[row.status]}</TableCell>
+                <TableCell>
+                  <Chip
+                    color={
+                      row.status === "waiting"
+                        ? ""
+                        : row.status === "not_approved"
+                        ? "secondary"
+                        : "primary"
+                    }
+                    label={REQUEST_STATUS_STATE[row.status]}
+                  />
+                </TableCell>
                 <TableCell>{actionsBlock(row)}</TableCell>
               </TableRow>
             ))}
@@ -248,4 +249,10 @@ function UsersManager(props) {
   );
 }
 
-export default UsersManager;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(RequestsBrowsingManager);

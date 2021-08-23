@@ -319,3 +319,16 @@ export const addStaffRequest = (payload) => {
       });
   });
 };
+
+export const approveItem = (payload) => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .post("staff-requests/approve-item", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
