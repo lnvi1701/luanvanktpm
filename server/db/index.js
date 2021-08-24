@@ -548,4 +548,38 @@ stockDB.getAllPermissions = () => {
   });
 };
 
+stockDB.approveItem = ({ item_id, item_status, output_time, stock_id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE items
+        SET output_time = ?, status = ?, stock_id = ?
+        WHERE id = ?`,
+      [output_time, item_status, stock_id, item_id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
+stockDB.approveRequest = ({ request_id, request_status }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE staff_requests
+        SET status = ?
+        WHERE id = ?`,
+      [request_status, request_id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 module.exports = stockDB;

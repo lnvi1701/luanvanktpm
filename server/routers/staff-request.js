@@ -15,17 +15,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.post("/update", async (req, res, next) => {
-//   try {
-//     const payload = req.body;
-//     let results = await dbLogin.updateItem(payload);
-//     res.json(results);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// });
-
 router.post("/add", async (req, res, next) => {
   try {
     const payload = req.body;
@@ -38,15 +27,20 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-// router.post("/delete", async (req, res, next) => {
-//   try {
-//     const payload = req.body;
-//     let results = await dbLogin.deleteItem(payload);
-//     res.json(results);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// });
+router.post("/approve-item", async (req, res, next) => {
+  try {
+    const payload = req.body;
+    if (payload.request_status === "not_approved") {
+      const request_not_approved = await dbLogin.approveRequest(payload);
+      return res.json({ request_not_approved });
+    }
+    const item_results = await dbLogin.approveItem(payload);
+    const request_results = await dbLogin.approveRequest(payload);
+    res.json({ item_results, request_results });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;
