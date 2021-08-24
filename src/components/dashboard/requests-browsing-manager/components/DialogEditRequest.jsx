@@ -48,6 +48,7 @@ function DialogEditRequest({
     getStatuses();
     getStocks();
     getStateItem(selectedRequest.item_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmitForm = (requestStatus) => {

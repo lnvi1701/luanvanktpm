@@ -20,8 +20,15 @@ import { format } from "date-fns";
 import { updateItem } from "../../../../api/stock-manager";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import { connect } from "react-redux";
 
-function DialogEditItem({ open, handleClose, selectedItem, onUpdateSuccess }) {
+function DialogEditItem({
+  open,
+  handleClose,
+  selectedItem,
+  onUpdateSuccess,
+  user,
+}) {
   // modal value
   const [typeId, setTypeId] = useState(selectedItem.type_id);
   const [statusId, setStatusId] = useState(selectedItem.status_id);
@@ -136,7 +143,7 @@ function DialogEditItem({ open, handleClose, selectedItem, onUpdateSuccess }) {
                   <option
                     key={item.value}
                     value={item.value}
-                    disabled={item.permission === "admin"}
+                    disabled={item.permission === "admin" && !user.isAdmin}
                   >
                     {item.label}
                   </option>
@@ -147,7 +154,11 @@ function DialogEditItem({ open, handleClose, selectedItem, onUpdateSuccess }) {
               <InputLabel>Kho</InputLabel>
               <Select fullWidth value={stockId} onChange={handleStockChange}>
                 {stockOptions.map((item) => (
-                  <option key={item.value} value={item.value}>
+                  <option
+                    key={item.value}
+                    value={item.value}
+                    disabled={item.permission === "admin" && !user.isAdmin}
+                  >
                     {item.label}
                   </option>
                 ))}
@@ -217,4 +228,10 @@ function DialogEditItem({ open, handleClose, selectedItem, onUpdateSuccess }) {
   );
 }
 
-export default DialogEditItem;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(DialogEditItem);
