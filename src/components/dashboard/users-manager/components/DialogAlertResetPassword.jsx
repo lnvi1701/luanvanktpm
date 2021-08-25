@@ -17,6 +17,8 @@ export default function DialogAlertResetPassword({
     const payload = {
       id: selectedItem.id,
       email: selectedItem.email,
+      stock_email: process.env.REACT_APP_STOCK_EMAIL,
+      stock_password: process.env.REACT_APP_STOCK_PASSWORD,
     };
     resetPassword(payload)
       .then((res) => {
