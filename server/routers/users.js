@@ -2,6 +2,7 @@ const express = require("express");
 const dbLogin = require("../db");
 const ERROR = require("../constants/code");
 const nodemailer = require("nodemailer");
+const generator = require("generate-password");
 
 const router = express.Router();
 
@@ -52,9 +53,13 @@ router.post("/delete", async (req, res, next) => {
 
 router.post("/reset-password", async (req, res, next) => {
   try {
+    const password = generator.generate({
+      length: 10,
+      numbers: true,
+    });
     const payload = req.body;
-    let results = await dbLogin.resetPassword(payload);
-    sendResetPasswordEmail(payload.email);
+    let results = await dbLogin.resetPassword({ ...payload, password });
+    sendResetPasswordEmail(payload.email, password);
     res.json(results);
   } catch (error) {
     console.log(error);
@@ -62,7 +67,7 @@ router.post("/reset-password", async (req, res, next) => {
   }
 });
 
-const sendResetPasswordEmail = (email) => {
+const sendResetPasswordEmail = (email, password) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -75,7 +80,7 @@ const sendResetPasswordEmail = (email) => {
     from: "plusight1@gmail.com",
     to: email,
     subject: "reset password success",
-    text: "password reset: stock.111",
+    text: `password reset: ${password}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

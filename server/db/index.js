@@ -522,13 +522,13 @@ stockDB.updateUser = ({
   });
 };
 
-stockDB.resetPassword = ({ id }) => {
+stockDB.resetPassword = ({ id, password }) => {
   return new Promise((resolve, reject) => {
     pool.query(
       `UPDATE users
               SET password = ?
               WHERE id = ?`,
-      ["stock.111", id],
+      [password, id],
       (err, result) => {
         if (err) {
           return reject(err);
