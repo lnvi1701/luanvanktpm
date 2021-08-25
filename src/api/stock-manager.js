@@ -332,3 +332,16 @@ export const approveItem = (payload) => {
       });
   });
 };
+
+export const resetPassword = (payload) => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .post("users/reset-password", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

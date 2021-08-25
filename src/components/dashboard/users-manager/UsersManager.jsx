@@ -14,7 +14,16 @@ import { getUsers } from "../../../api/stock-manager";
 import DialogAddNewUser from "./components/DialogAddNewUser";
 import DialogAlertRemoveUser from "./components/DialogAlertRemoveUser";
 import DialogEditUser from "./components/DialogEditUser";
+import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
+import DialogAlertResetPassword from "./components/DialogAlertResetPassword";
+import ToastServive from "react-material-toast";
 import "./UsersManager.scss";
+
+const toast = ToastServive.new({
+  place: "bottomRight",
+  duration: 2,
+  maxCount: 8,
+});
 
 function createData(
   id,
@@ -53,6 +62,7 @@ function UsersManager(props) {
   const [openAddNewUser, setOpenAddNewUser] = useState(false);
   const [openAlertRemove, setOpenAlertRemove] = useState(false);
   const [openEditUser, setOpenEditUser] = useState(false);
+  const [openResetPassword, setOpenResetPassword] = useState(false);
 
   const getData = async () => {
     const data = await getUsers();
@@ -62,15 +72,6 @@ function UsersManager(props) {
   useEffect(() => {
     getData();
   }, []);
-
-  const handleUpdateData = () => {
-    getData();
-  };
-
-  const handleClose = () => {
-    setOpenEditUser(false);
-    setSelectedUser(null);
-  };
 
   const rows = [
     ...list.map((item) =>
@@ -87,6 +88,16 @@ function UsersManager(props) {
     ),
   ];
 
+  const handleUpdateData = () => {
+    getData();
+  };
+
+  const handleClose = () => {
+    setOpenEditUser(false);
+    setOpenResetPassword(false);
+    setSelectedUser(null);
+  };
+
   const handleDeleteItem = (item) => {
     setSelectedUser(item);
     setOpenAlertRemove(true);
@@ -97,10 +108,22 @@ function UsersManager(props) {
     setOpenEditUser(true);
   };
 
+  const handleResetPassword = (user) => {
+    setSelectedUser(user);
+    setOpenResetPassword(true);
+  };
+
+  const handleResetPasswordSuccess = () => {
+    handleClose();
+    getData();
+    toast.info("reset password success!");
+  };
+
   const actionsBlock = (item) => {
     return (
       <div className="actionsBlock">
         <EditIcon onClick={() => handleEditUser(item)} />
+        <VpnKeyOutlinedIcon onClick={() => handleResetPassword(item)} />
         <DeleteIcon onClick={() => handleDeleteItem(item)} />
       </div>
     );
@@ -129,6 +152,15 @@ function UsersManager(props) {
       selectedUser={selectedUser}
       handleClose={handleClose}
       onEditSuccess={handleUpdateData}
+    />
+  ) : null;
+
+  const dialogResetPassword = openResetPassword ? (
+    <DialogAlertResetPassword
+      open={openResetPassword}
+      handleClose={handleClose}
+      selectedItem={selectedUser}
+      onSuccess={handleResetPasswordSuccess}
     />
   ) : null;
 
@@ -170,6 +202,7 @@ function UsersManager(props) {
       {dialogAddNewUser}
       {dialogAlertRemove}
       {dialogEditUser}
+      {dialogResetPassword}
     </div>
   );
 }
