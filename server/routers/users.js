@@ -59,7 +59,11 @@ router.post("/reset-password", async (req, res, next) => {
     });
     const payload = req.body;
     let results = await dbLogin.resetPassword({ ...payload, password });
-    sendResetPasswordEmail(payload.email, password);
+    const auth = {
+      user: payload.stock_email,
+      pass: payload.stock_password,
+    };
+    sendResetPasswordEmail(payload.email, password, auth);
     res.json(results);
   } catch (error) {
     console.log(error);
@@ -67,13 +71,10 @@ router.post("/reset-password", async (req, res, next) => {
   }
 });
 
-const sendResetPasswordEmail = (email, password) => {
+const sendResetPasswordEmail = (email, password, auth) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
-    auth: {
-      user: "plusight1@gmail.com",
-      pass: "Hung.965",
-    },
+    auth,
   });
 
   const mailOptions = {
