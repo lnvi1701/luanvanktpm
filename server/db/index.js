@@ -522,6 +522,27 @@ stockDB.updateUser = ({
   });
 };
 
+stockDB.resetPassword = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE users
+              SET password = ?
+              WHERE id = ?`,
+      ["stock.111", id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({
+          success: {
+            message: "update success",
+          },
+        });
+      }
+    );
+  });
+};
+
 stockDB.deleteUser = ({ id }) => {
   return new Promise((resolve, reject) => {
     pool.query(`DELETE FROM users WHERE id = ?`, [id], (err, result) => {
