@@ -69,6 +69,35 @@ stockDB.getAllItems = (orderby, sort_order) => {
   });
 };
 
+stockDB.getByExpiryTime = ({ expiry_time }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT i.id, it.name, input_time, output_time, expiry_time, i.description,
+              it.id AS type_id,
+              s.name AS status, s.id AS status_id,
+              st.name AS stock, st.id AS stock_id,
+              stp.name AS stock_type, stp.id AS stock_type_id
+        FROM items i
+        LEFT JOIN item_types it
+          ON i.type = it.id
+        LEFT JOIN statuses s
+          ON i.status = s.id
+        LEFT JOIN stocks st
+          ON i.stock_id = st.id
+        LEFT JOIN stock_types stp
+          ON st.type = stp.id
+        WHERE i.expiry_time = ?`,
+      [expiry_time],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
 stockDB.getItem = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
