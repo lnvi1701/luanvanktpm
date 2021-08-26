@@ -151,6 +151,19 @@ export const addItem = (payload) => {
   });
 };
 
+export const getItemsByExpiryTime = (payload) => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .post("items/about-to-exprire", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const deleteItem = (payload) => {
   return new Promise((resolve, reject) => {
     apiInstance
@@ -337,6 +350,19 @@ export const resetPassword = (payload) => {
   return new Promise((resolve, reject) => {
     apiInstance
       .post("users/reset-password", payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const mailExpiryDeviceToStaff = (payload) => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .post("items/mail-expiry-to-staff", payload)
       .then((response) => {
         resolve(response.data);
       })

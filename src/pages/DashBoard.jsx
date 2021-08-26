@@ -31,9 +31,7 @@ function DashBoard(props) {
     checkUser();
   });
 
-  const [activeComponent, setActiveComponent] = useState(
-    "RequestsBrowsingManager"
-  );
+  const [activeComponent, setActiveComponent] = useState("ItemsManager");
 
   const onItemClick = (item) => {
     setActiveComponent(item.component);

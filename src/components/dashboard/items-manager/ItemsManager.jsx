@@ -10,12 +10,14 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Select from "@material-ui/core/Select";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { getItems } from "../../../api/stock-manager";
 import DialogAddNewItem from "./components/DialogAddNewItem";
 import DialogEditItem from "./components/DialogEditItem";
 import DialogAlertRemove from "./components/DialogAlertRemove";
+import DialogSendEmail from "./components/DialogSendEmail";
 import "./ItemsManager.scss";
 
 const useStyles = makeStyles({
@@ -44,6 +46,8 @@ function ItemsManager(props) {
   const [openEditItem, setOpenEditItem] = useState(false);
   const [openAddNewItem, setOpenAddNewItem] = useState(false);
   const [openAlertRemove, setOpenAlertRemove] = useState(false);
+  const [openDialogAlertEmail, setOpenDialogAlertEmail] = useState(false);
+
   const [sortProperty, setSortProperty] = useState("id");
   const [sortOrder, setSortOrder] = useState("ASC");
 
@@ -132,6 +136,14 @@ function ItemsManager(props) {
     />
   ) : null;
 
+  const dialogAlertSendEmail = openDialogAlertEmail ? (
+    <DialogSendEmail
+      open={openDialogAlertEmail}
+      handleClose={() => setOpenDialogAlertEmail(false)}
+      onSuccess={() => getData(sortProperty, sortOrder)}
+    />
+  ) : null;
+
   const selectSort = (
     <div className="selectSort">
       Sắp xếp theo:&nbsp;
@@ -164,9 +176,14 @@ function ItemsManager(props) {
 
   return (
     <div className="itemsManager">
-      <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
-        Thêm thiết bị
-      </Button>
+      <ButtonGroup>
+        <Button color="primary" onClick={() => setOpenAddNewItem(true)}>
+          Thêm thiết bị
+        </Button>
+        <Button color="primary" onClick={() => setOpenDialogAlertEmail(true)}>
+          Thông báo thiết bị gần hết hạn
+        </Button>
+      </ButtonGroup>
       {selectSort}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
@@ -205,6 +222,7 @@ function ItemsManager(props) {
       {dialogEditItem}
       {dialogAddNewItem}
       {dialogAlertRemove}
+      {dialogAlertSendEmail}
     </div>
   );
 }
