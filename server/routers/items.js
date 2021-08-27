@@ -126,6 +126,8 @@ const sendEmailExpiryDevice = (
       },
     });
 
+    console.log(html);
+
     const mailOptions = {
       from: "Stock Manager",
       to: email,
