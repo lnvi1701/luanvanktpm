@@ -51,7 +51,22 @@ router.post("/update", async (req, res, next) => {
 
 router.post("/add", async (req, res, next) => {
   try {
-    const payload = req.body;
+    const { type, input_time, output_time, expiry_time, status, stock_id, description } = req.body;
+
+    if (!type || !input_time || !status || !stock_id || !description) {
+      return res.status(400).json({ error: 'Required fields are missing.' });
+    }
+
+    const payload = {
+      type,
+      input_time,
+      output_time,
+      expiry_time,
+      status,
+      stock_id,
+      description,
+    };
+
     let results = await dbLogin.addItem(payload);
     res.json(results);
   } catch (error) {
@@ -59,6 +74,7 @@ router.post("/add", async (req, res, next) => {
     res.sendStatus(500);
   }
 });
+
 
 router.post("/delete", async (req, res, next) => {
   try {

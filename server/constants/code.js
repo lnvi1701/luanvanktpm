@@ -1,11 +1,11 @@
 const ERROR = {
   invalid: {
     code: 1,
-    message: "user and password invalid",
+    message: "Tài khoản và mật khẩu không hợp lệ!",
   },
   incorect: {
     code: 2,
-    message: "user and password incorect",
+    message: "Tài khoản và mật khẩu không chính xác!",
   },
 };
 

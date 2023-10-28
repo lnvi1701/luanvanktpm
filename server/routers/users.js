@@ -58,13 +58,22 @@ router.post("/reset-password", async (req, res, next) => {
       numbers: true,
     });
     const payload = req.body;
-    let results = await dbLogin.resetPassword({ ...payload, password });
-    const auth = {
-      user: payload.stock_email,
-      pass: payload.stock_password,
-    };
-    sendResetPasswordEmail(payload.email, password, auth);
-    res.json(results);
+
+    if (!payload.emails || !Array.isArray(payload.emails) || payload.emails.length === 0) {
+      return res.json({ error: "error", message: "Không có địa chỉ email hợp lệ nào được cung cấp" });
+    }
+
+    // Send reset password emails to multiple recipients
+    for (const email of payload.emails) {
+      const auth = {
+        user: payload.stock_email,
+        pass: payload.stock_password,
+      };
+      sendResetPasswordEmail(email, password, auth);
+    }
+
+    // You can return a success message or response here
+    res.json({ success: { message: "Mật khẩu đặt lại đẫ được gửi đến email thành công!" } });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -78,17 +87,17 @@ const sendResetPasswordEmail = (email, password, auth) => {
   });
 
   const mailOptions = {
-    from: "plusight1@gmail.com",
+    from: "vib1906610@student.ctu.edu.vn",
     to: email,
-    subject: "reset password success",
-    text: `password reset: ${password}`,
+    subject: "Đặt lại mật khẩu thành công",
+    text: `Mật khẩu mới của bạn: ${password}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
-      console.log("Email sent: " + info.response);
+      console.log("Email đã được gửi đến " + email + ": " + info.response);
     }
   });
 };

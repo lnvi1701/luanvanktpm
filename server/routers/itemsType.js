@@ -19,18 +19,25 @@ router.get("/", async (req, res, next) => {
 router.post("/update", async (req, res, next) => {
   try {
     const payload = req.body;
-    console.log(payload);
-    let results = await dbLogin.updateItemType(payload);
-    res.json(results);
+    const result = await dbLogin.updateItemType(payload);
+    
+    if (result.affectedRows === 1) {
+      res.json({ success: true, message: "Item type updated successfully" });
+    } else {
+      res.status(400).json({ success: false, message: "Failed to update item type" });
+    }
   } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
+    console.error(error);
+    res.status(500).json({ success: false, message: "An error occurred while updating." });
   }
 });
 
 router.post("/add", async (req, res, next) => {
   try {
     const payload = req.body;
+    if (typeof payload.id_itype === "undefined") {
+      payload.id_itype = null;
+    }
     let results = await dbLogin.addItemType(payload);
     res.json(results);
   } catch (error) {
@@ -42,38 +49,11 @@ router.post("/add", async (req, res, next) => {
 router.post("/delete", async (req, res, next) => {
   try {
     const payload = req.body;
-    let results = await dbLogin.deleteItemType(payload);
-    res.json(results);
-    // sendDeleteEmail();
+    const result = await dbLogin.deleteItemType(payload);
+    res.json(result);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.sendStatus(500);
   }
 });
-
-// const sendDeleteEmail = () => {
-//   const transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//       user: "plusight1@gmail.com",
-//       pass: "Hung.965",
-//     },
-//   });
-
-//   const mailOptions = {
-//     from: "sktt1kennet@gmail.com",
-//     to: "hungcan1998965@gmail.com",
-//     subject: "Sending Email using Node.js",
-//     text: "That was easy!",
-//   };
-
-//   transporter.sendMail(mailOptions, function (error, info) {
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       console.log("Email sent: " + info.response);
-//     }
-//   });
-// };
-
 module.exports = router;

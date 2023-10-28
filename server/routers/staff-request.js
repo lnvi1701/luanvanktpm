@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
-  }
+  } 
 });
 
 router.post("/add", async (req, res, next) => {

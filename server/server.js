@@ -31,8 +31,8 @@ const port = process.env.PORT || 5000;
 
 const DAY_DURATION = 1000 * 60 * 60 * 24;
 
-app.listen(port, () => {
-  console.log(`server run on port: ${port}`);
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
 });
 
 const sendExpiryItemsToStaff = async () => {
@@ -42,8 +42,7 @@ const sendExpiryItemsToStaff = async () => {
   const items = await stockDB.getByExpiryTime(payload);
   const users = await stockDB.getAllUsers();
 
-  if (!items.length || !users.length)
-    return console.log("do not have item or user");
+  if (!items.length || !users.length) return console.log("No items or users found");
 
   const emails = users.map((user) => user.email);
 
@@ -102,17 +101,17 @@ const buildHtmlTable = (items) => {
   <table style="border: 1px solid black">
     <thead style="border: 1px solid black">
       <tr style="border: 1px solid black">
-        <th scope="col">Mã</th>
-        <th scope="col">Tên</th>
+        <th scope="col">Mã thiết bị</th>
+        <th scope="col">Tên thiết bị/th>
         <th scope="col">Trạng thái</th>
-        <th scope="col">Vị trí</th>
+        <th scope="col">Vị trí kho</th>
         <th scope="col">Ngày nhập</th>
         <th scope="col">Ngày hết hạn</th>
         <th scope="col">Mô tả</th>
       </tr>
     </thead>
     <tbody style="border: 1px solid black">
-      ${items.map((item) => buildHtmlRow(item))}
+      ${items.map((item) => buildHtmlRow(item)).join("")}
     </tbody>
   </table>
   `;
@@ -121,7 +120,7 @@ const buildHtmlTable = (items) => {
 const getDate = (stringDate) => {
   if (!stringDate) return "--";
   const cvDate = new Date(stringDate);
-  return format(cvDate, "dd/MM/yyyy");
+  return format(cvDate, "dd-MM-yyyy");
 };
 
 const buildHtmlRow = (row) => {
@@ -144,5 +143,4 @@ const buildHtmlRow = (row) => {
       <td style="border: 1px solid black; padding: 8px">${row.description}</td>
     </tr>`;
 };
-
 setInterval(sendExpiryItemsToStaff, DAY_DURATION);
