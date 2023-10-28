@@ -17,6 +17,7 @@ export default function DialogAlertRemoveItemType({
     const payload = {
       id: selectedItem.id,
     };
+
     console.log(payload);
     deleteItemType(payload)
       .then((res) => {
@@ -28,6 +29,7 @@ export default function DialogAlertRemoveItemType({
         console.log(err);
       });
   };
+
   return (
     <div>
       <Dialog
@@ -37,8 +39,7 @@ export default function DialogAlertRemoveItemType({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Xác nhận xoá: {selectedItem && selectedItem.name} (id:
-          {selectedItem && selectedItem.id})
+          Xác nhận xoá: {selectedItem && selectedItem.name}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

@@ -12,7 +12,7 @@ import TextError from "../../../common/text-error/TextError";
 
 const STATUS_OPTIONS = [
   { value: "active", label: "Hoạt động" },
-  { value: "deactive", label: "Bị Khoá" },
+  { value: "deactive", label: "Dừng hoạt động" },
 ];
 
 export default function DialogAddNewUser({
@@ -136,7 +136,7 @@ export default function DialogAddNewUser({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm danh mục</DialogTitle>
+        <DialogTitle id="form-dialog-title">Thêm tài khoản</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <TextField
@@ -207,14 +207,14 @@ export default function DialogAddNewUser({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Hủy
           </Button>
           <Button
             onClick={handleSubmitForm}
             color="primary"
             disabled={disabledSubmitForm()}
           >
-            Submit
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>

@@ -112,7 +112,6 @@ function PrimarySearchAppBar(props) {
   const onToggleMenuClick = (event) => {
     props.onHambugerClick();
   };
-
   const handleLogout = () => {
     props.logOut();
     setAnchorEl(null);
@@ -131,10 +130,10 @@ function PrimarySearchAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+      
     </Menu>
   );
-
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -147,31 +146,31 @@ function PrimarySearchAppBar(props) {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+        <IconButton aria-label="show 4 new mails" color="#000000">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Tin nhắn</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
+        <IconButton aria-label="show 11 new notifications" color="#000000">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Thông báo</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit"
+          color="#000000"
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Hồ sơ cá nhân</p>
       </MenuItem>
     </Menu>
   );
@@ -179,21 +178,22 @@ function PrimarySearchAppBar(props) {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar  style={{ backgroundColor: '#e1dbcc' }}>
           <IconButton
             edge="start"
             className={classes.menuButton}
-            color="inherit"
+            color="#000000"
             aria-label="open drawer"
             onClick={onToggleMenuClick}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Stock-Manager
+          <Typography className={classes.title} variant="h6"  style={{ color: "#000000" }} noWrap>
+            INVENTORY-NV
           </Typography>
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
+            <div className={classes.searchIcon} style={{ color: "#000000" }}>
+              
               <SearchIcon />
             </div>
             <InputBase
@@ -203,6 +203,7 @@ function PrimarySearchAppBar(props) {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
+              style={{ color: "#000000" }}
             />
           </div>
           <div className={classes.grow} />
@@ -213,7 +214,7 @@ function PrimarySearchAppBar(props) {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color="#000000"
             >
               <AccountCircle />
             </IconButton>
@@ -224,7 +225,7 @@ function PrimarySearchAppBar(props) {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color="#000000"
             >
               <MoreIcon />
             </IconButton>

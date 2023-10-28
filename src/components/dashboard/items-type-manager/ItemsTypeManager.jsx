@@ -17,8 +17,8 @@ import DialogAddNewItemType from "./components/DialogAddNewItemType";
 import DialogEditItemType from "./components/DialogEditItemType";
 import DialogAlertRemoveItemType from "./components/DialogAlertRemoveItemType";
 
-function createData(id, name, category, unit, description, category_id) {
-  return { id, name, category, unit, description, category_id };
+function createData(id, id_itype, name, category, unit, description, category_id) {
+  return {id, id_itype, name, category, unit, description, category_id };
 }
 
 const useStyles = makeStyles({
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 });
 
 const SORT_OPTIONS = [
-  { value: "id", label: "Mã" },
+  { value: "id_itype", label: "Mã thiết bị" },
   { value: "name", label: "Tên" },
   { value: "category", label: "Danh mục" },
 ];
@@ -85,18 +85,18 @@ function ItemsTypeManager(props) {
   }, [sortProperty, sortOrder]);
 
   const rows = [
-    ...list.map((item) =>
-      createData(
-        item.id,
-        item.name,
-        item.category,
-        item.unit,
-        item.description,
-        item.category_id
-      )
-    ),
-  ];
-
+  ...list.map((item) =>
+    createData(
+      item.id,
+      item.id_itype, // Include id_itype here
+      item.name,
+      item.category,
+      item.unit,
+      item.description,
+      item.category_id
+    )
+  ),
+];
   const selectSort = (
     <div className="selectSort">
       Sắp xếp theo:&nbsp;
@@ -172,19 +172,19 @@ function ItemsTypeManager(props) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Mã</TableCell>
+              <TableCell>Mã thiết bị</TableCell>
               <TableCell>Tên</TableCell>
               <TableCell>Danh mục</TableCell>
               <TableCell>Đơn vị</TableCell>
               <TableCell>Mô tả</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Hoạt động</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.id_itype}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.category}</TableCell>

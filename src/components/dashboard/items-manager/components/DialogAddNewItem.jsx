@@ -7,6 +7,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -18,24 +20,28 @@ import { getItemTypes } from "../../../../meta-data/item-types";
 import { statuses } from "../../../../meta-data/statuses";
 import { stocks } from "../../../../meta-data/stocks";
 
+
 export default function DialogAddNewItem({
   open,
   handleClose,
   onUpdateSuccess,
 }) {
-  // modal value
-  const [typeId, setTypeId] = useState("1");
-  const [statusId, setStatusId] = useState("1");
-  const [stockId, setStockId] = useState("1");
+  
+  // Modal values
+  const [typeId, setTypeId] = useState("");
+  const [statusId, setStatusId] = useState("");
+  const [stockId, setStockId] = useState("");
   const [description, setDescription] = useState("");
   const [inputTime, setInputTime] = useState(new Date());
   const [expiryTime, setExpiryTime] = useState(null);
   const [outputTime, setOutputTime] = useState(null);
+  const [quality, setQuality] = useState(""); // You can add state for quality
 
-  // list options
-  const [statusOptions, setStatusOptions] = useState([]);
-  const [stockOptions, setStockOptions] = useState([]);
-  const [itemTypes, setItemTypes] = useState([]);
+  // List options
+  const [statusOptions, setStatusOptions] = useState([{ label: "", value: "" }]);
+  const [stockOptions, setStockOptions] = useState([{ label: "", value: "" }]);
+  const [itemTypes, setItemTypes] = useState([{ label: "", value: "" }]);
+  const [typeIdErr, setTypeIdErr] = useState(null);
 
   useEffect(() => {
     const getStatuses = async () => {
@@ -71,28 +77,41 @@ export default function DialogAddNewItem({
     setTypeId(value);
   };
 
-  const handleSubmitForm = () => {
-    const payload = {
-      type: typeId,
-      input_time: inputTime ? format(inputTime, "yyyy-MM-dd") : null,
-      output_time: outputTime ? format(outputTime, "yyyy-MM-dd") : null,
-      expiry_time: expiryTime ? format(expiryTime, "yyyy-MM-dd") : null,
-      status: statusId,
-      stock_id: stockId,
-      description: description,
-    };
-    console.log(payload);
-    addItem(payload)
-      .then((res) => {
-        console.log("pl: ", payload);
-        onUpdateSuccess();
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleCheckValidateQuality = (event) => {
+    if (!event.target.value) {
+      setTypeIdErr("Vui lòng nhập số lượng!");
+    } else {
+      setTypeIdErr(null);
+      setQuality(event.target.value);
+    }
   };
 
+  const handleSubmitForm = () => {
+  const formatDate = (date) => {
+    return date ? format(date, "yyyy-MM-dd") : null;
+  };
+
+  const payload = {
+    type: typeId,
+    input_time: formatDate(inputTime),
+    output_time: formatDate(outputTime),
+    expiry_time: formatDate(expiryTime),
+    status: statusId,
+    stock_id: stockId,
+    description: description,
+  };
+
+  console.log(payload);
+  addItem(payload)
+    .then((res) => {
+      console.log("Payload: ", payload);
+      onUpdateSuccess();
+      handleClose();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
   return (
     <div className="dialogEditItem">
       <Dialog
@@ -102,46 +121,54 @@ export default function DialogAddNewItem({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add new Item</DialogTitle>
+        <DialogTitle id="form-dialog-title">Thêm mới thiết bị</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <Select
               native
               fullWidth
-              label="Name"
+              label="Tên sản phẩm"
               value={typeId}
               onChange={handleTypeIdChange}
             >
               {itemTypes.map((item) => (
                 <option key={item.value} value={item.value}>
-                  {item.label}
+                  {item.label === "" ? "Tất cả" : item.label}
                 </option>
               ))}
             </Select>
+            <TextField
+              fullWidth
+              label="Số lượng"
+              value={quality}
+              onChange={handleCheckValidateQuality} // Thêm sự kiện onChange
+              onBlur={handleCheckValidateQuality}
+              error={typeIdErr}
+              helperText={typeIdErr}
+            />
             <Select
               native
               fullWidth
-              label="Status"
+              label="Trạng thái sản phẩm "
               value={statusId}
               onChange={handleStatusChange}
             >
               {statusOptions.map((item) => (
                 <option key={item.value} value={item.value}>
-                  {item.label}
+                  {item.label === "" ? "Tất cả" : item.label}
                 </option>
               ))}
             </Select>
             <Select
-              displayEmpty
               native
               fullWidth
-              label="Stock"
+              label="Vị trí kho"
               value={stockId}
               onChange={handleStockChange}
             >
               {stockOptions.map((item) => (
                 <option key={item.value} value={item.value}>
-                  {item.label}
+                  {item.label === "" ? "Tất cả" : item.label}
                 </option>
               ))}
             </Select>
@@ -150,7 +177,7 @@ export default function DialogAddNewItem({
                 <KeyboardDatePicker
                   disableToolbar
                   variant="inline"
-                  format="dd/MM/yyyy"
+                  format="dd-MM-yyyy"
                   margin="normal"
                   label="Ngày nhập"
                   value={inputTime}
@@ -162,7 +189,7 @@ export default function DialogAddNewItem({
                 <KeyboardDatePicker
                   disableToolbar
                   variant="inline"
-                  format="dd/MM/yyyy"
+                  format="dd-MM-yyyy"
                   margin="normal"
                   label="Ngày hết hạn"
                   value={expiryTime}
@@ -175,7 +202,7 @@ export default function DialogAddNewItem({
                   disabled
                   disableToolbar
                   variant="inline"
-                  format="dd/MM/yyyy"
+                  format="dd-MM-yyyy"
                   margin="normal"
                   label="Ngày xuất"
                   value={outputTime}

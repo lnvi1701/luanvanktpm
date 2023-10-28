@@ -17,9 +17,10 @@ export default function DialogAddNewCategory({
   // modal value
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [id_category, setIdCategory] = useState("");
+  const [idCategoryError, setIdCategoryError] = useState(null);
 
   // error state
-
   const [nameErr, setNameErr] = useState(null);
 
   const handleNameChange = (event) => {
@@ -35,16 +36,30 @@ export default function DialogAddNewCategory({
     setNameErr(null);
   };
 
+  const handleCheckValidateCategori = (event) => {
+    if (!event || !event.target.value) {
+      setIdCategoryError("Không được bỏ trống mã danh mục");
+      return;
+    }
+    setIdCategoryError(null);
+  };
+
   const handleSubmitForm = () => {
     const payload = {
       name,
       description,
+      id_categori: id_category,
     };
 
     addCategory(payload)
       .then((res) => {
-        console.log(res);
-        onAddNewSuccess();
+        if (res.success) {
+          console.log(res);
+          onAddNewSuccess();
+        } else {
+          // Handle the case where id_category already exists in the database
+          setIdCategoryError("Mã danh mục đã tồn tại.");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -65,11 +80,20 @@ export default function DialogAddNewCategory({
           <form className="formEditItem">
             <TextField
               fullWidth
+              label="Mã danh mục"
+              value={id_category}
+              onChange={(e) => setIdCategory(e.target.value)}
+              onBlur={handleCheckValidateCategori}
+              error={!!idCategoryError}
+              helperText={idCategoryError}
+            />
+            <TextField
+              fullWidth
               label="Tên danh mục"
               value={name}
               onChange={handleNameChange}
               onBlur={handleCheckValidateName}
-              error={nameErr}
+              error={!!nameErr}
               helperText={nameErr}
             />
             <TextareaAutosize
@@ -86,7 +110,11 @@ export default function DialogAddNewCategory({
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmitForm} color="primary" disabled={!name}>
+          <Button
+            onClick={handleSubmitForm}
+            color="primary"
+            disabled={!name || idCategoryError}
+          >
             Submit
           </Button>
         </DialogActions>

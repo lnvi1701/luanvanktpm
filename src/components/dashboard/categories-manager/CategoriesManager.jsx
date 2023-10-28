@@ -16,10 +16,9 @@ import DialogAddNewCategory from "./components/DialogAddNewCategory";
 import DialogEditCategory from "./components/DialogEditCategory";
 import DialogRemoveCategory from "./components/DialogRemoveCategory";
 
-function createData(id, name, description) {
-  return { id, name, description };
-}
-
+function createData(id, name, description, id_category) {
+  return { id, name, description, id_category };
+} 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -44,9 +43,9 @@ function CategoriesManager(props) {
     getData();
   }, []);
 
-  const rows = [
-    ...list.map((item) => createData(item.id, item.name, item.description)),
-  ];
+ const rows = list.map((item) =>
+  createData(item.id, item.name, item.description, item.id_categori)
+);
 
   const handleAddNewSuccess = () => {
     getData();
@@ -104,6 +103,7 @@ function CategoriesManager(props) {
 
   return (
     <div className="categoriesManager">
+ 
       <Button color="primary" onClick={() => setOpenAddNewCategory(true)}>
         Thêm danh mục thiết bị
       </Button>
@@ -111,17 +111,17 @@ function CategoriesManager(props) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Mã</TableCell>
-              <TableCell>Tên</TableCell>
+              <TableCell>Mã danh mục</TableCell>
+              <TableCell>Tên danh mục</TableCell>
               <TableCell>Mô tả</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Hoạt động</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.id}
+              <TableCell component="th" scope="row">
+                  {row.id_category}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.description}</TableCell>

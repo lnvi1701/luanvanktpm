@@ -84,10 +84,11 @@ function ItemsManager(props) {
     ...list.map((item) =>
       createData(
         item.id,
-        item.name,
-        item.input_time,
-        item.output_time,
-        item.expiry_time,
+        item.id_itype,
+        item.type,
+        item.inputTime,
+        item.outputTime,
+        item.expiryTime,
         item.status,
         item.stock,
         item.stock_type,
@@ -191,6 +192,7 @@ function ItemsManager(props) {
             <TableRow>
               <TableCell>Mã</TableCell>
               <TableCell>Tên</TableCell>
+              <TableCell>Số lượng</TableCell>
               <TableCell>Trạng thái</TableCell>
               <TableCell>Vị trí</TableCell>
               <TableCell>Ngày nhập</TableCell>
@@ -206,12 +208,13 @@ function ItemsManager(props) {
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{`${row.stock} (${row.stock_type})`}</TableCell>
-                <TableCell>{getDate(row.input_time)}</TableCell>
-                <TableCell>{getDate(row.expiry_time)}</TableCell>
-                <TableCell>{getDate(row.output_time)}</TableCell>
+                <TableCell>{`${row.type} (${row.name})`}</TableCell>
+                <TableCell>{row.quality}</TableCell>
+                <TableCell>{`${row.id} (${row.status_id})`}</TableCell>
+                <TableCell>{`${row.id} (${row.status_id})`}</TableCell>
+                <TableCell>{getDate(row.inputTime)}</TableCell>
+                <TableCell>{getDate(row.expiryTime)}</TableCell>
+                <TableCell>{getDate(row.outputTime)}</TableCell>
                 <TableCell>{row.description}</TableCell>
                 <TableCell>{actionsBlock(row)}</TableCell>
               </TableRow>
@@ -235,10 +238,12 @@ const getDate = (stringDate) => {
 
 const createData = (
   id,
-  name,
-  input_time,
-  output_time,
-  expiry_time,
+  id_itype,
+  quality,
+  type,
+  inputTime,
+  outputTime,
+  expiryTime,
   status,
   stock,
   stock_type,
@@ -250,10 +255,12 @@ const createData = (
 ) => {
   return {
     id,
-    name,
-    input_time,
-    output_time,
-    expiry_time,
+    id_itype,
+    quality,
+    type,
+    inputTime,
+    outputTime,
+    expiryTime,
     status,
     stock,
     stock_type,
@@ -264,5 +271,4 @@ const createData = (
     type_id,
   };
 };
-
 export default ItemsManager;

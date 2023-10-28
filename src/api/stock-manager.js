@@ -371,3 +371,43 @@ export const mailExpiryDeviceToStaff = (payload) => {
       });
   });
 };
+
+
+export const getItemsCountByCategory = () => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .get("items-count-by-category")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getItemsCountByUser = () => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .get("items-count-by-user")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getItemStatuses = () => {
+  return new Promise((resolve, reject) => {
+    apiInstance
+      .get("item-statuses")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

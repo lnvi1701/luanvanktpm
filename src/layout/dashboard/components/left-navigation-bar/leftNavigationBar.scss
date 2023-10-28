@@ -2,20 +2,20 @@
   height: calc(100vh - 64px);
   > .wrapper {
     padding: 20px 0;
-    border-right: 1px solid #eee;
+    border-right: 1px solid #e1dbcc;
     height: 100%;
     .item {
       padding: 12px 20px;
       cursor: pointer;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #e1dbcc;
       white-space: nowrap;
 
       &.active {
-        background-color: #eee;
+        background-color: #e1dbcc;
       }
 
       &:hover {
-        background-color: #eee;
+        background-color: #e1dbcc;
       }
     }
   }

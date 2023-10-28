@@ -10,7 +10,6 @@ function DashBoardLayout({ children, onItemClick, activeComponent }) {
   const onToggleMenu = () => {
     setIsOpenNav(!isOpenNav);
   };
-
   const leftNavBar = isOpenNav ? (
     <LeftNavigationBar
       onItemClick={onItemClick}

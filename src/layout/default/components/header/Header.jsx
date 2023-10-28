@@ -36,12 +36,13 @@ export default function ButtonAppBar() {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ backgroundColor: '#e1dbcc' }}>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            style={{ color: "#000000" }}
           >
             <MenuIcon />
           </IconButton>
@@ -49,11 +50,12 @@ export default function ButtonAppBar() {
             variant="h6"
             className={classes.title}
             onClick={onLogoClick}
+            style={{ color: "#000000" }}
           >
-            Stock Manager
+            INVENTORY-NV
           </Typography>
           <Button onClick={onLoginBtnClick}>
-            <span style={{ color: "#fff" }}>Login</span>
+            <span style={{ color: "#000000" }}>ĐĂNG NHẬP</span>
           </Button>
         </Toolbar>
       </AppBar>

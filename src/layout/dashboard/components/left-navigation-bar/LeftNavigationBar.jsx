@@ -3,19 +3,19 @@ import "./leftNavigationBar.scss";
 import { connect } from "react-redux";
 
 const NAV_ITEM = [
-  {
-    name: "Quản lý danh sách thiết bị",
+   {
+    name: "Quản lý kho thiết bị",
     component: "ItemsManager",
-    accessRights: ["user", "admin"],
-  },
-  {
-    name: "Quản lý loại thiết bị",
-    component: "ItemsTypeManager",
     accessRights: ["user", "admin"],
   },
   {
     name: "Quản lý danh mục thiết bị",
     component: "CategoriesManager",
+    accessRights: ["user", "admin"],
+  },
+  {
+    name: "Quản lý phân loại thiết bị",
+    component: "ItemsTypeManager",
     accessRights: ["user", "admin"],
   },
   {
@@ -28,6 +28,11 @@ const NAV_ITEM = [
     component: "RequestsBrowsingManager",
     accessRights: ["user", "admin"],
   },
+  {
+    name: "Thống kê kho hàng",
+    component: "StockStatistics",
+    accessRights: ["user", "admin"],
+},
 ];
 
 function LeftNavigationBar(props) {

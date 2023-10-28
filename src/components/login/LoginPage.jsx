@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { adminLogin } from "../../api/stock-manager";
 import { setAuth } from "../../redux/auth/auth.actions";
+import { Grid, Link } from "@material-ui/core";
 
 import "./loginPage.scss";
 
@@ -59,14 +60,14 @@ function LoginPage({ setAuth }) {
   const contentBtn = apiLoading ? (
     <CircularProgress color="secondary" />
   ) : (
-    "Login"
+    "Đăng nhập"
   );
 
   const error = err ? (
     <p style={{ textAlign: "center", color: "red" }}>{err}</p>
   ) : null;
 
-  return (
+   return (
     <div className="loginPage">
       <form className="form" noValidate autoComplete="off">
         <TextField
@@ -86,6 +87,14 @@ function LoginPage({ setAuth }) {
           onChange={onPasswordChange}
         />
 
+        <Grid container>
+          <Grid item>
+            <Link href="#" variant="body2"  >
+              Quên mật khẩu?
+            </Link>
+          </Grid>
+        </Grid>
+
         <FormControlLabel
           control={
             <Switch
@@ -104,8 +113,7 @@ function LoginPage({ setAuth }) {
       </form>
     </div>
   );
-}
-
+};
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,

@@ -107,9 +107,12 @@ export default function DialogSendEmail({ open, handleClose }) {
   };
 
   const handleButtonClick = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
+  if (!loading) {
+    setSuccess(false);
+    setLoading(true);
+
+    // Kiểm tra xem html.current có giá trị không null trước khi truy cập thuộc tính của nó
+    if (html.current) {
       const payload = {
         html: html.current.innerHTML,
         expiry_time: format(getTomorrow(), "yyyy-MM-dd"),
@@ -125,7 +128,8 @@ export default function DialogSendEmail({ open, handleClose }) {
         })
         .finally(() => setLoading(false));
     }
-  };
+  }
+};
 
   const renderSuccessMessage = success.length ? (
     <div>
@@ -284,7 +288,8 @@ const createData = (
   stock_id,
   stock_type_id,
   description,
-  type_id
+  type_id, 
+  id_itype
 ) => {
   return {
     id,
@@ -300,6 +305,7 @@ const createData = (
     stock_type_id,
     description,
     type_id,
+    id_itype
   };
 };
 

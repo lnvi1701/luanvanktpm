@@ -21,14 +21,15 @@ export default function DialogAddNewItemType({
   const [name, setName] = useState(selectedItem.name);
   const [category, setCategory] = useState(selectedItem.category_id);
   const [unit, setUnit] = useState(selectedItem.unit);
-  const [description, setDescription] = useState(selectedItem.description);
+  const [description, setDescription] = useState(selectedItem.description); 
+ 
 
   // list options
   const [categories, setCategories] = useState([]);
 
   // error state
-
   const [nameErr, setNameErr] = useState(null);
+ 
 
   useEffect(() => {
     const getCategories = async () => {
@@ -39,10 +40,10 @@ export default function DialogAddNewItemType({
     getCategories();
   }, []);
 
-  const handleNameChange = (event) => {
-    const { value } = event.target;
-    setName(value);
-  };
+const handleNameChange = (event) => {
+  const { value } = event.target;
+  setName(value);
+};
 
   const handleCheckValidateName = (event) => {
     if (!event || !event.target.value) {
@@ -69,9 +70,8 @@ export default function DialogAddNewItemType({
       category,
       unit,
       description,
+      id_itype: selectedItem.id_itype,
     };
-
-    console.log(payload);
 
     updateItemType(payload)
       .then((res) => {
@@ -92,9 +92,15 @@ export default function DialogAddNewItemType({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm loại thiết bị</DialogTitle>
+        <DialogTitle id="form-dialog-title">Sửa loại thiết bị</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
+            <TextField
+              fullWidth
+              label="Mã loại thiết bị"
+              value={selectedItem.id_itype}
+              disabled
+            />
             <TextField
               fullWidth
               label="Tên thiết bị"

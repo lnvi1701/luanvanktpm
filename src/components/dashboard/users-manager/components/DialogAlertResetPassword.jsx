@@ -52,7 +52,7 @@ export default function DialogAlertResetPassword({
             Huỷ
           </Button>
           <Button onClick={handleSubmitForm} color="primary" autoFocus>
-            Đồng ý
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>

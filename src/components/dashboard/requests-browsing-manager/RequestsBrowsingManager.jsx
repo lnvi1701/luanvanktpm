@@ -72,12 +72,8 @@ function RequestsBrowsingManager(props) {
   // state
   const [selectedRequest, setSelectedRequest] = useState(null);
 
-  const [sortProperty, setSortProperty] = useState("id");
-  const [sortOrder, setSortOrder] = useState("ASC");
-
   const getData = async (sortProperty, sortOrder) => {
     const data = await getStaffRequests(sortProperty, sortOrder);
-    console.log(data);
     setList(data);
   };
 
@@ -87,17 +83,17 @@ function RequestsBrowsingManager(props) {
   };
 
   useEffect(() => {
-    const getStatuses = async () => {
+    const fetchData = async () => {
       const listStt = await statuses();
       setStatusOptions(listStt);
+      getStocks();
+      getData();
     };
-    getStatuses();
-    getStocks();
-    getData(sortProperty, sortOrder);
-  }, [sortProperty, sortOrder]);
+    fetchData();
+  }, []);
 
   const handleUpdateData = () => {
-    getData(sortProperty, sortOrder);
+    getData();
   };
 
   const handleClose = () => {
@@ -111,38 +107,34 @@ function RequestsBrowsingManager(props) {
     setOpenDialogEditRequest(true);
   };
 
-  const rows = [
-    ...list.map((item) =>
-      createData(
-        item.current_status_id,
-        item.date_time,
-        item.detail,
-        item.full_name,
-        item.id,
-        item.item_id,
-        item.staff_id,
-        item.status,
-        item.update_address,
-        item.updated_status_id,
-        item.name,
-        item.current_stock,
-        item.updated_stock
-      )
-    ),
-  ];
+  const rows = list.map((item) =>
+    createData(
+      item.current_status_id,
+      item.date_time,
+      item.detail,
+      item.full_name,
+      item.id,
+      item.item_id,
+      item.staff_id,
+      item.status,
+      item.update_address,
+      item.updated_status_id,
+      item.name,
+      item.current_stock,
+      item.updated_stock
+    )
+  );
 
   const renderDeleteIcon = props.user.isAdmin ? (
     <DeleteIcon onClick={() => {}} />
   ) : null;
 
-  const actionsBlock = (item) => {
-    return (
-      <div className="actionsBlock">
-        <DescriptionIcon onClick={() => handleDescriptionClick(item)} />
-        {renderDeleteIcon}
-      </div>
-    );
-  };
+  const actionsBlock = (item) => (
+    <div className="actionsBlock">
+      <DescriptionIcon onClick={() => handleDescriptionClick(item)} />
+      {renderDeleteIcon}
+    </div>
+  );
 
   const renderDialogCreateRequest = openCreateRequest ? (
     <DialogCreateRequest
@@ -171,7 +163,7 @@ function RequestsBrowsingManager(props) {
           <TableHead>
             <TableRow>
               <TableCell>Mã </TableCell>
-              <TableCell>Tên thiết bị (Mã)</TableCell>
+              <TableCell>Tên thiết bị</TableCell>
               <TableCell>Trạng thái hiện tại</TableCell>
               <TableCell>Kho hiện tại</TableCell>
               <TableCell>Nhân viên tạo báo cáo</TableCell>
@@ -187,7 +179,7 @@ function RequestsBrowsingManager(props) {
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
-                <TableCell>{`${row.name} [${row.item_id}]`} </TableCell>
+                <TableCell>{`${row.name} [${row.id_item}]`} </TableCell>
                 <TableCell>
                   <Select disabled fullWidth value={row.current_status_id}>
                     {statusOptions.map((item) => (

@@ -57,7 +57,7 @@ function DialogEditRequest({
       request_status: requestStatus,
       item_id: selectedItem.id,
       item_status: selectedRequest.updated_status_id,
-      output_time: format(new Date(), "yyyy-MM-dd"),
+      output_time: format(new Date(), "dd-MM-yyyy"),
       stock_id: selectedRequest.updated_stock,
     };
     console.log(payload);

@@ -5,6 +5,7 @@ import UsersManager from "../components/dashboard/users-manager/UsersManager";
 import CategoriesManager from "../components/dashboard/categories-manager/CategoriesManager";
 import RequestsBrowsingManager from "../components/dashboard/requests-browsing-manager/RequestsBrowsingManager";
 import ItemsTypeManager from "../components/dashboard/items-type-manager/ItemsTypeManager";
+// import SuppliersManager from "../components/dashboard/supplier-manager/SuppliersManager";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -16,6 +17,7 @@ const COMPONENTS = {
   UsersManager: <UsersManager />,
   CategoriesManager: <CategoriesManager />,
   RequestsBrowsingManager: <RequestsBrowsingManager />,
+  
 };
 
 function DashBoard(props) {

@@ -7,36 +7,45 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
 import { updateCategory } from "../../../../api/stock-manager";
-import "./DialogAddNewCategory.scss";
+import "./DialogEditCategory.scss";
 
-export default function DialogAddNewCategory({
+export default function DialogEditCategory({
   open,
   handleClose,
   onUpdateSuccess,
   selectedItem,
 }) {
-  // modal value
-  const [name, setName] = useState(selectedItem.name);
-  const [description, setDescription] = useState(selectedItem.description);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [nameError, setNameError] = useState(null);
 
-  // error state
-
-  const [nameErr, setNameErr] = useState(null);
+  // Update state when the selected item changes
+  React.useEffect(() => {
+    if (selectedItem) {
+      setName(selectedItem.name);
+      setDescription(selectedItem.description);
+    }
+  }, [selectedItem]);
 
   const handleNameChange = (event) => {
     const { value } = event.target;
     setName(value);
   };
 
-  const handleCheckValidateName = (event) => {
-    if (!event || !event.target.value) {
-      setNameErr("Không được bỏ trống tên");
-      return;
+  const handleCheckValidateName = () => {
+    if (!name) {
+      setNameError("Không được bỏ trống tên");
+    } else {
+      setNameError(null);
     }
-    setNameErr(null);
   };
 
   const handleSubmitForm = () => {
+    if (!name) {
+      setNameError("Không được bỏ trống tên");
+      return;
+    }
+
     const payload = {
       id: selectedItem.id,
       name,
@@ -55,7 +64,7 @@ export default function DialogAddNewCategory({
   };
 
   return (
-    <div className="dialogAddNewItemType">
+    <div className="dialogEditCategory">
       <Dialog
         open={open}
         fullWidth
@@ -63,17 +72,23 @@ export default function DialogAddNewCategory({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Thêm danh mục</DialogTitle>
+        <DialogTitle id="form-dialog-title">Sửa danh mục</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
+            <TextField
+              fullWidth
+              label="Mã danh mục"
+              value={selectedItem.id_category} // Assuming id_category is the correct field
+              disabled
+            />
             <TextField
               fullWidth
               label="Tên danh mục"
               value={name}
               onChange={handleNameChange}
               onBlur={handleCheckValidateName}
-              error={nameErr}
-              helperText={nameErr}
+              error={!!nameError}
+              helperText={nameError}
             />
             <TextareaAutosize
               value={description}
@@ -89,8 +104,8 @@ export default function DialogAddNewCategory({
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmitForm} color="primary" disabled={!name}>
-            Submit
+          <Button onClick={handleSubmitForm} color="primary">
+            Update
           </Button>
         </DialogActions>
       </Dialog>

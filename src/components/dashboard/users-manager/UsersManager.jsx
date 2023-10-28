@@ -173,12 +173,12 @@ function UsersManager(props) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Mã</TableCell>
+              <TableCell>Mã nhân viên</TableCell>
               <TableCell>Họ và tên</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Chức năng</TableCell>
               <TableCell>Trạng thái</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Hoạt động</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

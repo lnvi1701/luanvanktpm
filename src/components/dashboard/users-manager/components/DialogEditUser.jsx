@@ -123,7 +123,7 @@ export default function DialogEditUser({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Sửa thông tin</DialogTitle>
+        <DialogTitle id="form-dialog-title">Chỉnh sửa thông tin tài khoản</DialogTitle>
         <DialogContent>
           <form className="formEditItem">
             <TextField
@@ -184,14 +184,15 @@ export default function DialogEditUser({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Hủy
           </Button>
           <Button
             onClick={handleSubmitForm}
             color="primary"
             disabled={disabledSubmitForm()}
+            
           >
-            Submit
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>
