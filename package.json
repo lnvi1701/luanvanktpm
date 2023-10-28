@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "stock-client",
   "version": "0.1.0",
   "private": true,
@@ -52,5 +53,34 @@
   "devDependencies": {
     "node-sass": "^6.0.1",
     "sass": "^1.37.5"
+=======
+  "name": "real-time-chat-room",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon server/server.js -w server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mui/lab": "^5.0.0-alpha.146",
+    "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.0",
+    "date-fns": "^2.30.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "generate-password": "^1.7.0",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.1",
+    "mysql2-promise": "^0.1.4",
+    "nodemailer": "^6.6.3",
+    "react-chartjs-2": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+>>>>>>> d421f5937ed412636abbdd786795e14f2eed3ea8
   }
 }
